@@ -6,7 +6,7 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="theme-color" content="#111113">
-<title>quillmist</title>
+<title>NEXUS</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css">
@@ -53,6 +53,25 @@
   --bub: #e4e4e2;
 }
 
+
+/* Nexus theme — white + crimson */
+[data-theme="nexus"] {
+  --bg: #ffffff;
+  --bar: #f4f4f4;
+  --bar2: #e8e8e8;
+  --border: #d8d8d8;
+  --border2: #c4c4c4;
+  --fg: #111111;
+  --fg2: #444444;
+  --dim: #999999;
+  --acc: #8b2020;
+  --bub: #f0f0f0;
+  --red: #8b2020;
+  --green: #2d7a4e;
+  --yellow: #8b6000;
+  --blue: #1a5c8b;
+  --purple: #5c2d8b;
+}
 * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
 html, body { height: 100%; height: 100dvh; overflow: hidden; }
 body {
@@ -325,7 +344,7 @@ body {
   font-size: 9px; color: var(--fg2); flex-shrink: 0;
   font-family: 'DM Mono', monospace; font-weight: 500;
 }
-.ai-nm { font-size: 11px; font-weight: 600; color: var(--fg2); }
+.ai-nm { font-size: 11px; font-weight: 700; color: var(--acc); font-family: 'DM Mono', monospace; letter-spacing: 0.06em; }
 .ai-badge {
   font-size: 8px; padding: 1px 6px; border-radius: 20px;
   background: rgba(255,255,255,.05);
@@ -1038,8 +1057,8 @@ input[type=range]::-moz-range-thumb { width: 14px; height: 14px; border-radius: 
 
 <!-- LOGIN -->
 <div id="login-scr">
-  <div class="login-logo">quillmist</div>
-  <div class="login-sub">v15 · llama-3.3-70b · groq</div>
+  <div class="login-logo">NEXUS</div>
+  <div class="login-sub">NEXUS AI</div>
   <div id="saved-accs">
     <div class="sa-title">// RECENT</div>
     <div id="sa-list"></div>
@@ -1086,7 +1105,7 @@ input[type=range]::-moz-range-thumb { width: 14px; height: 14px; border-radius: 
 
   <!-- TOP BAR -->
   <div id="topbar">
-    <div id="pg-title">Chat AI</div>
+    <div id="pg-title">Nexus AI</div>
     <div id="tb-acts"></div>
     <div id="token-badge" onclick="showTokenInfo()" title="Token remaining" style="font-size:9px;font-family:'DM Mono',monospace;color:var(--dim);cursor:pointer;padding:3px 7px;border:1px solid var(--border2);border-radius:10px;white-space:nowrap;flex-shrink:0;">— tk</div>
   </div>
@@ -1221,6 +1240,8 @@ input[type=range]::-moz-range-thumb { width: 14px; height: 14px; border-radius: 
             <div style="display:flex;gap:6px;">
               <button class="tbtn active" id="th-dark" onclick="setTheme('dark')">Dark</button>
               <button class="tbtn" id="th-light" onclick="setTheme('light')">Light</button>
+              <button class="tbtn" id="th-nexus" onclick="setTheme('nexus')">Nexus</button>
+              <button class="tbtn" id="th-nexus" onclick="setTheme('nexus')">Nexus</button>
             </div>
           </div>
           <div class="sg">
@@ -1267,7 +1288,7 @@ input[type=range]::-moz-range-thumb { width: 14px; height: 14px; border-radius: 
             <button class="bigbtn" onclick="reqNotifPerm()">Request Permission</button>
           </div>
           <div class="sg"><div class="sl-lbl">DANGER</div><button class="bigbtn danger" onclick="clearAll()">Clear All Data</button></div>
-          <div style="text-align:center;padding:12px 0;font-size:9px;color:var(--border2);font-family:'DM Mono',monospace;">quillmist v15 · groq · llama-3.3-70b</div>
+          <div style="text-align:center;padding:12px 0;font-size:9px;color:var(--border2);font-family:'DM Mono',monospace;">NEXUS · llama-3.3-70b</div>
         </div>
       </div>
 
@@ -1434,7 +1455,7 @@ const DAYS=['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
 const DAYS_TH=['จันทร์','อังคาร','พุธ','พฤหัส','ศุกร์','เสาร์','อาทิตย์'];
 
 const ALL_PAGES=[
-  {id:'chat',   icon:'chat', nameTh:'Chat AI',    nameEn:'Chat AI'},
+  {id:'chat',   icon:'chat', nameTh:'Nexus AI',    nameEn:'Nexus AI'},
   {id:'kb',     icon:'KB', nameTh:'ฐานข้อมูล', nameEn:'Knowledge Base'},
   {id:'notes',  icon:'note', nameTh:'โน้ต',      nameEn:'Notes'},
   {id:'sched',  icon:'cal', nameTh:'ตาราง',     nameEn:'Schedule'},
@@ -1458,7 +1479,7 @@ let CU=null,AK='',currentLang='th';
 let notes=[],schedule=[],kbDocs=[],subjects=[],folders=[];
 let savedExams=[];
 let chatHistory=[],busy=false,chatMode='normal';
-let examQs=[],examAs=[],examTimer=null,examSec=0,examDiff='easy';
+let examQs=[],examAs=[],examTimer=null,examSec=0,examDiff='easy',examFocus='';
 let examTopics=[],examHistory=[];
 let qCount=5,qCounts=[3,5,10,15,20],qIdx=1;
 let editingCID=null,noteFilter2='all',currentNoteId=null,currentFolderId=null;
@@ -1551,7 +1572,7 @@ function loginOK(u,email){
   atEnabled=d.atEnabled||false;atX=d.atX||null;atY=d.atY||null;
   brightness=d.brightness||100;contrast=d.contrast||100;
   currentLang=localStorage.getItem('ql_lang_'+u)||'th';
-  applyDisplaySettings();setTheme(localStorage.getItem('ql_th_'+u)||'dark',false);
+  applyDisplaySettings();setTheme(localStorage.getItem('ql_th_'+u)||'nexus',false);
   setLang(currentLang,false);
   examTopics=subjects.filter(s=>s.active).map(s=>s.id);
   renderSubjectList();renderRefs();renderExamChips();
@@ -1575,7 +1596,7 @@ function doCP(){const o=document.getElementById('cp-o').value,n=document.getElem
 window.addEventListener('load',()=>{renderSA();const s=JSON.parse(sessionStorage.getItem(SESS)||'null');if(s?.u&&s?.k){const users=getUsers();if(users[s.u]){AK=s.k;loginOK(s.u,users[s.u].email||'');return;}}document.getElementById('login-scr').style.display='flex';});
 
 // ── LANG ──
-function T(k){return currentLang==='th'?({page_chat:'Chat AI',page_kb:'ฐานข้อมูล',page_notes:'โน้ต',page_sched:'ตาราง',page_formula:'สูตร',page_exam:'ข้อสอบ',page_calc:'คำนวณ',page_settings:'ตั้งค่า',calculate:'คำนวณ',reset:'รีเซต'})[k]||k:({page_chat:'Chat AI',page_kb:'KB',page_notes:'Notes',page_sched:'Schedule',page_formula:'Formulas',page_exam:'Exam',page_calc:'Calculator',page_settings:'Settings',calculate:'Calculate',reset:'Reset'})[k]||k;}
+function T(k){return currentLang==='th'?({page_chat:'Nexus AI',page_kb:'ฐานข้อมูล',page_notes:'โน้ต',page_sched:'ตาราง',page_formula:'สูตร',page_exam:'ข้อสอบ',page_calc:'คำนวณ',page_settings:'ตั้งค่า',calculate:'คำนวณ',reset:'รีเซต'})[k]||k:({page_chat:'Nexus AI',page_kb:'KB',page_notes:'Notes',page_sched:'Schedule',page_formula:'Formulas',page_exam:'Exam',page_calc:'Calculator',page_settings:'Settings',calculate:'Calculate',reset:'Reset'})[k]||k;}
 function setLang(l,save=true){
   currentLang=l;if(save&&CU)localStorage.setItem('ql_lang_'+CU,l);
   document.getElementById('lang-th')?.classList.toggle('active',l==='th');
@@ -1600,9 +1621,11 @@ function applyDisplaySettings(){
   if(ctr){ctr.value=contrast;document.getElementById('ct-val').textContent=contrast+'%';}
 }
 function setTheme(t,save=true){
-  document.documentElement.setAttribute('data-theme',t==='light'?'light':'');
-  document.getElementById('th-dark')?.classList.toggle('active',t!=='light');
+  const attr=t==='light'?'light':t==='nexus'?'nexus':'';
+  document.documentElement.setAttribute('data-theme',attr);
+  document.getElementById('th-dark')?.classList.toggle('active',t==='dark'||t==='');
   document.getElementById('th-light')?.classList.toggle('active',t==='light');
+  document.getElementById('th-nexus')?.classList.toggle('active',t==='nexus');
   if(save&&CU)localStorage.setItem('ql_th_'+CU,t);
 }
 
@@ -2173,7 +2196,15 @@ Types: line,arrow,rect,circle,dot,arc,label,dim,axes. Colors: fg,acc,red,green,b
   // Schedule — only if today has classes
   const sched=tc.length?`\nToday: ${tc.map(c=>c.start+' '+c.name).join(', ')}`:'';
 
-  return`quillmist AI — engineering study assistant. Subjects: ${subjs}.${sched}${mex[chatMode]||''}${lang}${units}${diag}\nUse LaTeX: $...$ inline, $$...$$ display. Be concise.`;
+  // Pull relevant notes as context
+  const relNotes=typeof fuzzyNotes==='function'&&userText
+    ?fuzzyNotes(userText).slice(0,3).filter(n=>n.body&&n.body.length>20)
+    :[];
+  const notesCtx=relNotes.length
+    ?`\n\nUSER NOTES (use if relevant):\n${relNotes.map(n=>`[${n.title}]\n${n.body.substring(0,300)}`).join('\n\n')}`
+    :'';
+
+  return`Nexus AI — engineering study assistant. Subjects: ${subjs}.${sched}${mex[chatMode]||''}${lang}${units}${diag}${notesCtx}\nUse LaTeX: $...$ inline, $$...$$ display. Be concise.`;
 }
 
 async function sendMsgCore(text){
@@ -2308,8 +2339,8 @@ function addAIMsg(text,mode){
   const w=document.createElement('div');w.className='mw ai';
   const b=document.createElement('div');b.className='mb ai';
   const hd=document.createElement('div');hd.className='ai-hd';
-  const av=document.createElement('div');av.className='ai-av';av.textContent='Q';
-  const nm=document.createElement('span');nm.className='ai-nm';nm.textContent='quillmist';
+  const av=document.createElement('div');av.className='ai-av';av.textContent='N';
+  const nm=document.createElement('span');nm.className='ai-nm';nm.textContent='Nexus AI';
   const bg=document.createElement('span');bg.className='ai-badge';bg.textContent=mode==='system'?'ai':mode;
   hd.appendChild(av);hd.appendChild(nm);hd.appendChild(bg);
   const c=document.createElement('div');c.className='aic';c.innerHTML=renderMD(text);
@@ -2337,7 +2368,7 @@ function addAIMsg(text,mode){
   }
   w.appendChild(b);msgsEl.appendChild(w);scrollMsgs();
 }
-function addTyping(id){const w=document.createElement('div');w.className='mw ai';w.id=id;const b=document.createElement('div');b.className='mb ai';const hd=document.createElement('div');hd.className='ai-hd';const av=document.createElement('div');av.className='ai-av';av.textContent='Q';const nm=document.createElement('span');nm.className='ai-nm';nm.textContent='quillmist';hd.appendChild(av);hd.appendChild(nm);const ti=document.createElement('div');ti.innerHTML='<div class="typ"><span></span><span></span><span></span></div>';b.appendChild(hd);b.appendChild(ti);w.appendChild(b);msgsEl.appendChild(w);scrollMsgs();}
+function addTyping(id){const w=document.createElement('div');w.className='mw ai';w.id=id;const b=document.createElement('div');b.className='mb ai';const hd=document.createElement('div');hd.className='ai-hd';const av=document.createElement('div');av.className='ai-av';av.textContent='N';const nm=document.createElement('span');nm.className='ai-nm';nm.textContent='Nexus AI';hd.appendChild(av);hd.appendChild(nm);const ti=document.createElement('div');ti.innerHTML='<div class="typ"><span></span><span></span><span></span></div>';b.appendChild(hd);b.appendChild(ti);w.appendChild(b);msgsEl.appendChild(w);scrollMsgs();}
 function removeTyping(id){document.getElementById(id)?.remove();}
 function scrollMsgs(){requestAnimationFrame(()=>{msgsEl.scrollTop=msgsEl.scrollHeight;});}
 function tryBuildDiagram(raw){
@@ -2833,7 +2864,7 @@ function ewRenderStep(){
   }
 
   else if(ewStep===2){
-    // Step 3: Count + Start
+    // Step 3: Count + Focus + Start
     body.innerHTML=`
       <div class="ew-q">${currentLang==='th'?'กี่ข้อ?':'How many?'}</div>
       <div class="ew-hint">${examTopics.join(', ')} · ${examDiff}</div>
@@ -2845,10 +2876,14 @@ function ewRenderStep(){
         </div>
         <button class="ew-num-btn" onclick="ewAdjQ(1)">+</button>
       </div>
-      <div class="ew-footer" style="margin-top:32px;">
+      <div style="padding:0 4px;margin-top:12px;">
+        <div style="font-size:10px;font-family:'DM Mono',monospace;color:var(--dim);margin-bottom:6px;">${currentLang==='th'?'เน้นเรื่องอะไร? (ไม่บังคับ)':'Focus topic? (optional)'}</div>
+        <textarea id="ew-focus" placeholder="${currentLang==='th'?'เช่น: Rankine cycle, entropy, การส่งถ่ายความร้อน...':'e.g. Rankine cycle, entropy, heat transfer...'}" style="width:100%;background:var(--bar2);border:1px solid var(--border2);border-radius:8px;color:var(--fg);font-size:12px;font-family:DM Sans,sans-serif;padding:10px;resize:none;height:72px;outline:none;line-height:1.5;">${examFocus||''}</textarea>
+      </div>
+      <div class="ew-footer" style="margin-top:16px;">
         <button class="ew-btn-back" onclick="ewBack()">←</button>
-        <button class="ew-btn-timed" onclick="startExam(true)">${currentLang==='th'?'⏱ จับเวลา':'⏱ Timed'}</button>
-        <button class="ew-btn-next" onclick="startExam(false)">${currentLang==='th'?'เริ่ม':'Start'}</button>
+        <button class="ew-btn-timed" onclick="ewSaveFocus();startExam(true)">${currentLang==='th'?'จับเวลา':'Timed'}</button>
+        <button class="ew-btn-next" onclick="ewSaveFocus();startExam(false)">${currentLang==='th'?'เริ่ม':'Start'}</button>
       </div>`;
   }
 }
@@ -2870,6 +2905,7 @@ function ewToggleTopic(id,el){
   ewCheckNext0();
 }
 
+function ewSaveFocus(){examFocus=(document.getElementById('ew-focus')?.value||'').trim();}
 function ewPickDiff(id,el){
   examDiff=id;
   document.querySelectorAll('#ew-body .ew-opt').forEach(o=>o.classList.remove('sel'));
@@ -2913,7 +2949,8 @@ async function startExam(timed){
   let kbCtx='';
   if(incKB&&kbDocs.length)kbCtx='\n\nKB Content:\n'+kbDocs.map(d=>d.pages.slice(0,2).map(p=>p.text.substring(0,300)).join(' ')).join('\n').substring(0,1500);
 
-  const prompt=`Create ${qCount} multiple choice questions about: ${subjs||(incKB?'the KB content':'Engineering')}${kbCtx}
+  const focusLine=examFocus?`\nFocus specifically on: ${examFocus}`:'';
+  const prompt=`Create ${qCount} multiple choice questions about: ${subjs||(incKB?'the KB content':'Engineering')}${kbCtx}${focusLine}
 Difficulty: ${getDiffPrompt()}
 Language: ${currentLang==='th'?'Thai (ภาษาไทย)':'English'}
 
@@ -3193,6 +3230,8 @@ const CALC_CATS=[
   {id:'convert',nameTh:'แปลงหน่วย',nameEn:'Convert'},
   {id:'tables',nameTh:'ตาราง',nameEn:'Tables'},
   {id:'sci',nameTh:'เครื่องคิดเลข',nameEn:'Sci Calc'},
+  {id:'state',nameTh:'State Lookup',nameEn:'State Lookup'},
+  {id:'ph',nameTh:'P-h Diagram',nameEn:'P-h Diagram'},
 ];
 const CALCS={
   thermo:[
@@ -3510,6 +3549,334 @@ const TD_TABLES={
 };
 
 let tdCurrentTable='steam_sat_T',tdSearch='',tdTableKeys=Object.keys(TD_TABLES);
+
+// ── STATE LOOKUP TABLE (ข้อ 2) ──
+// Water saturation data for state lookup
+const STEAM_SAT_T_FULL = [
+  {T:0,   Psat:0.6113, hf:0.00,   hfg:2500.9, hg:2500.9, sf:0.0000, sfg:9.1562, sg:9.1562, vf:0.001000, vg:206.14},
+  {T:5,   Psat:0.8721, hf:21.02,  hfg:2489.6, hg:2510.6, sf:0.0763, sfg:8.9496, sg:9.0259, vf:0.001000, vg:147.12},
+  {T:10,  Psat:1.2276, hf:42.02,  hfg:2477.7, hg:2519.8, sf:0.1511, sfg:8.7498, sg:8.9009, vf:0.001000, vg:106.38},
+  {T:20,  Psat:2.3388, hf:83.96,  hfg:2453.5, hg:2537.4, sf:0.2966, sfg:8.3706, sg:8.6672, vf:0.001002, vg:57.791},
+  {T:30,  Psat:4.2470, hf:125.79, hfg:2429.8, hg:2555.6, sf:0.4369, sfg:8.0164, sg:8.4533, vf:0.001004, vg:32.894},
+  {T:40,  Psat:7.3849, hf:167.57, hfg:2406.7, hg:2574.3, sf:0.5725, sfg:7.6845, sg:8.2570, vf:0.001008, vg:19.523},
+  {T:50,  Psat:12.349, hf:209.33, hfg:2382.8, hg:2592.1, sf:0.7038, sfg:7.3725, sg:8.0763, vf:0.001012, vg:12.032},
+  {T:60,  Psat:19.940, hf:251.13, hfg:2358.5, hg:2609.6, sf:0.8312, sfg:7.0784, sg:7.9096, vf:0.001017, vg:7.671},
+  {T:70,  Psat:31.19,  hf:292.98, hfg:2333.8, hg:2626.8, sf:0.9549, sfg:6.8004, sg:7.7553, vf:0.001023, vg:5.042},
+  {T:80,  Psat:47.39,  hf:334.91, hfg:2308.0, hg:2642.9, sf:1.0753, sfg:6.5375, sg:7.6128, vf:0.001029, vg:3.407},
+  {T:90,  Psat:70.14,  hf:376.92, hfg:2281.4, hg:2658.4, sf:1.1925, sfg:6.2866, sg:7.4791, vf:0.001036, vg:2.361},
+  {T:100, Psat:101.33, hf:419.04, hfg:2256.4, hg:2675.5, sf:1.3069, sfg:6.0480, sg:7.3549, vf:0.001044, vg:1.6729},
+  {T:110, Psat:143.27, hf:461.30, hfg:2229.7, hg:2691.1, sf:1.4185, sfg:5.8202, sg:7.2387, vf:0.001052, vg:1.2102},
+  {T:120, Psat:198.53, hf:503.71, hfg:2202.6, hg:2706.3, sf:1.5276, sfg:5.6024, sg:7.1300, vf:0.001060, vg:0.8919},
+  {T:140, Psat:361.3,  hf:589.13, hfg:2144.7, hg:2733.9, sf:1.7391, sfg:5.1908, sg:6.9299, vf:0.001080, vg:0.5089},
+  {T:160, Psat:617.8,  hf:675.55, hfg:2082.6, hg:2758.1, sf:1.9427, sfg:4.8012, sg:6.7440, vf:0.001102, vg:0.3071},
+  {T:180, Psat:1002.2, hf:763.22, hfg:2015.3, hg:2778.2, sf:2.1396, sfg:4.4448, sg:6.5843, vf:0.001127, vg:0.1941},
+  {T:200, Psat:1553.8, hf:852.45, hfg:1940.7, hg:2793.2, sf:2.3309, sfg:4.1024, sg:6.4335, vf:0.001157, vg:0.12736},
+  {T:220, Psat:2318.8, hf:943.62, hfg:1858.5, hg:2802.1, sf:2.5178, sfg:3.7683, sg:6.2861, vf:0.001190, vg:0.08619},
+  {T:240, Psat:3344.7, hf:1037.3, hfg:1766.5, hg:2803.8, sf:2.7015, sfg:3.4480, sg:6.1494, vf:0.001229, vg:0.05976},
+  {T:260, Psat:4688.3, hf:1134.4, hfg:1662.5, hg:2796.9, sf:2.8838, sfg:3.1334, sg:6.0172, vf:0.001276, vg:0.04221},
+  {T:280, Psat:6412.7, hf:1236.0, hfg:1543.6, hg:2779.6, sf:3.0668, sfg:2.8158, sg:5.8827, vf:0.001332, vg:0.03017},
+  {T:300, Psat:8580.5, hf:1344.0, hfg:1404.9, hg:2748.9, sf:3.2534, sfg:2.4511, sg:5.7045, vf:0.001404, vg:0.02167},
+  {T:320, Psat:11274,  hf:1461.5, hfg:1238.6, hg:2700.1, sf:3.4480, sfg:2.0882, sg:5.5362, vf:0.001499, vg:0.01549},
+  {T:340, Psat:14601,  hf:1594.2, hfg:1027.9, hg:2622.1, sf:3.6594, sfg:1.6763, sg:5.3357, vf:0.001638, vg:0.01080},
+  {T:360, Psat:18651,  hf:1761.7, hfg:720.5,  hg:2482.2, sf:3.9164, sfg:1.0961, sg:5.0526, vf:0.001893, vg:0.006945},
+  {T:374.14,Psat:22089,hf:2099.3, hfg:0,      hg:2099.3, sf:4.4120, sfg:0,      sg:4.4120, vf:0.003155, vg:0.003155},
+];
+
+const STEAM_SAT_P_FULL = [
+  {P:1,    Tsat:6.97,  hf:29.30,  hfg:2484.9, hg:2514.2, sf:0.1059, sfg:8.8697, sg:8.9756, vf:0.001000, vg:129.21},
+  {P:5,    Tsat:32.88, hf:137.82, hfg:2423.7, hg:2561.5, sf:0.4764, sfg:7.9187, sg:8.3951, vf:0.001005, vg:28.193},
+  {P:10,   Tsat:45.81, hf:191.83, hfg:2392.8, hg:2584.7, sf:0.6493, sfg:7.5009, sg:8.1502, vf:0.001010, vg:14.674},
+  {P:25,   Tsat:64.97, hf:272.06, hfg:2346.3, hg:2618.3, sf:0.8932, sfg:7.0518, sg:7.9450, vf:0.001020, vg:6.2045},
+  {P:50,   Tsat:81.33, hf:340.49, hfg:2305.4, hg:2645.9, sf:1.0910, sfg:6.5029, sg:7.5939, vf:0.001030, vg:3.2408},
+  {P:100,  Tsat:99.63, hf:417.44, hfg:2258.0, hg:2675.5, sf:1.3026, sfg:6.0568, sg:7.3594, vf:0.001043, vg:1.6940},
+  {P:200,  Tsat:120.23,hf:504.49, hfg:2201.9, hg:2706.7, sf:1.5301, sfg:5.5970, sg:7.1271, vf:0.001061, vg:0.8857},
+  {P:400,  Tsat:143.63,hf:604.74, hfg:2133.8, hg:2738.5, sf:1.7766, sfg:5.1193, sg:6.8959, vf:0.001084, vg:0.4625},
+  {P:600,  Tsat:158.85,hf:670.56, hfg:2086.3, hg:2756.8, sf:1.9312, sfg:4.8288, sg:6.7600, vf:0.001101, vg:0.3157},
+  {P:800,  Tsat:170.43,hf:721.11, hfg:2048.0, hg:2769.1, sf:2.0462, sfg:4.6166, sg:6.6628, vf:0.001115, vg:0.2404},
+  {P:1000, Tsat:179.91,hf:762.81, hfg:2015.3, hg:2778.1, sf:2.1387, sfg:4.4478, sg:6.5865, vf:0.001127, vg:0.19444},
+  {P:1500, Tsat:198.32,hf:844.89, hfg:1947.3, hg:2792.2, sf:2.3150, sfg:4.1298, sg:6.4448, vf:0.001154, vg:0.13177},
+  {P:2000, Tsat:212.42,hf:908.79, hfg:1890.7, hg:2799.5, sf:2.4474, sfg:3.8935, sg:6.3409, vf:0.001177, vg:0.09963},
+  {P:3000, Tsat:234.99,hf:1008.42,hfg:1795.7, hg:2804.2, sf:2.6457, sfg:3.5412, sg:6.1869, vf:0.001216, vg:0.06668},
+  {P:5000, Tsat:263.99,hf:1154.23,hfg:1640.1, hg:2794.3, sf:2.9202, sfg:2.9751, sg:5.8953, vf:0.001286, vg:0.03944},
+  {P:10000,Tsat:311.06,hf:1407.56,hfg:1317.6, hg:2725.5, sf:3.3596, sfg:2.1387, sg:5.6141, vf:0.001452, vg:0.018026},
+  {P:15000,Tsat:342.24,hf:1610.5, hfg:893.0,  hg:2503.5, sf:3.6848, sfg:1.2130, sg:4.8978, vf:0.001658, vg:0.010337},
+  {P:20000,Tsat:365.81,hf:1826.3, hfg:376.6,  hg:2202.9, sf:4.0139, sfg:0.4099, sg:4.4141, vf:0.002036, vg:0.005834},
+];
+
+// State lookup: given known properties, find unknown ones
+const STATE_COLS = {
+  T:     {label:'T',     unit:'°C',     desc:'Temperature'},
+  P:     {label:'P',     unit:'kPa',    desc:'Pressure'},
+  h:     {label:'h',     unit:'kJ/kg',  desc:'Specific enthalpy'},
+  s:     {label:'s',     unit:'kJ/kg·K',desc:'Specific entropy'},
+  v:     {label:'v',     unit:'m³/kg',  desc:'Specific volume'},
+  x:     {label:'x',     unit:'-',      desc:'Quality (0-1)'},
+  phase: {label:'Phase', unit:'-',      desc:'Phase description'},
+};
+
+let slInputs = {}; // user's known values
+let slResult = null;
+
+function buildStateLookup() {
+  const body = document.getElementById('calc-body');
+  if (!body) return;
+  body.style.cssText = 'padding:0;overflow:hidden;display:flex;flex-direction:column;';
+  body.innerHTML = `
+    <div style="flex:1;overflow-y:auto;padding:12px;display:flex;flex-direction:column;gap:10px;">
+      <div style="font-size:11px;color:var(--fg2);line-height:1.6;">ป้อน <b>T หรือ P</b> + อีก 1 ค่า (x, h, s) แล้วกด <b>Find</b></div>
+      <div style="background:var(--bar2);border:1px solid var(--border);border-radius:10px;overflow:hidden;">
+        <table style="width:100%;border-collapse:collapse;">
+          <thead><tr style="border-bottom:2px solid var(--border);">
+            <th style="padding:9px 12px;text-align:left;font-size:10px;color:var(--dim);font-family:'DM Mono',monospace;">Quantity</th>
+            <th style="padding:9px 12px;text-align:right;font-size:10px;color:var(--dim);font-family:'DM Mono',monospace;">Value</th>
+            <th style="padding:9px 12px;font-size:10px;color:var(--dim);font-family:'DM Mono',monospace;">Unit</th>
+          </tr></thead>
+          <tbody>
+            ${[['T','Temperature','°C','เช่น 120'],['P','Pressure','kPa','เช่น 200'],['h','Enthalpy h','kJ/kg','เช่น 504'],['s','Entropy s','kJ/kg·K','เช่น 1.53'],['x','Quality x','0–1','เช่น 0.7']].map(([k,label,unit,ph])=>`
+            <tr style="border-bottom:1px solid var(--border);">
+              <td style="padding:8px 12px;font-size:12px;color:var(--fg);">${label}</td>
+              <td style="padding:6px 8px;"><input id="sl-${k}" type="number" placeholder="${ph}" style="width:100%;text-align:right;background:none;border:none;border-bottom:1px solid var(--border2);color:var(--acc);font-size:14px;font-family:'DM Mono',monospace;outline:none;padding:2px 4px;" oninput="slUpdate()"></td>
+              <td style="padding:8px 12px;font-size:11px;color:var(--dim);font-family:'DM Mono',monospace;">${unit}</td>
+            </tr>`).join('')}
+          </tbody>
+        </table>
+      </div>
+      <div style="display:flex;gap:8px;">
+        <button class="tbtn" onclick="slSolve()" style="flex:1;">Find State</button>
+        <button class="tbtn" onclick="['T','P','h','s','x'].forEach(k=>{const e=document.getElementById('sl-'+k);if(e)e.value='';});slInputs={};document.getElementById('sl-result').innerHTML='';">Clear</button>
+      </div>
+      <div id="sl-result"></div>
+    </div>`;
+}
+
+
+function slUpdate() {
+  slInputs = {};
+  Object.keys(STATE_COLS).filter(k=>k!=='phase').forEach(k => {
+    const v = document.getElementById('sl-'+k)?.value?.trim();
+    if (v && !isNaN(parseFloat(v))) slInputs[k] = parseFloat(v);
+  });
+}
+
+function slLinInterp(arr, key, val) {
+  // find surrounding rows
+  const sorted = [...arr].sort((a,b) => a[key]-b[key]);
+  for (let i=0; i<sorted.length-1; i++) {
+    if (sorted[i][key] <= val && sorted[i+1][key] >= val) {
+      const f = (val - sorted[i][key]) / (sorted[i+1][key] - sorted[i][key]);
+      const row = {};
+      Object.keys(sorted[i]).forEach(col => {
+        row[col] = sorted[i][col] + f*(sorted[i+1][col]-sorted[i][col]);
+      });
+      row._f = f;
+      row._lo = sorted[i];
+      row._hi = sorted[i+1];
+      row._key = key;
+      return row;
+    }
+  }
+  return null;
+}
+
+function slPhaseDesc(x) {
+  if (x === undefined || x === null) return 'Superheated vapor / Compressed liquid';
+  if (x <= 0) return 'Saturated liquid (f)';
+  if (x >= 1) return 'Saturated vapor (g)';
+  return `Saturated mixture (x = ${x.toFixed(4)})`;
+}
+
+function slFmt(v, dec=4) {
+  if (v === undefined || v === null || isNaN(v)) return '—';
+  return parseFloat(v.toFixed(dec)).toString();
+}
+
+function slSolve() {
+  slUpdate();
+  const known = slInputs;
+  const res = document.getElementById('sl-result');
+  if (!res) return;
+  if (Object.keys(known).length < 1) {
+    res.style.display = 'block';
+    res.innerHTML = '<div style="color:var(--red);font-size:12px;">ป้อนค่าอย่างน้อย 1 ค่า</div>';
+    return;
+  }
+
+  let row = null, steps = [], phase = '';
+
+  // Case 1: T known → look up sat table by T
+  if (known.T !== undefined) {
+    row = slLinInterp(STEAM_SAT_T_FULL, 'T', known.T);
+    if (row) {
+      const x = known.x;
+      // Determine phase
+      if (known.h !== undefined) {
+        if (known.h < row.hf) { phase = 'Compressed liquid'; }
+        else if (known.h > row.hg) { phase = 'Superheated vapor'; }
+        else {
+          const xCalc = (known.h - row.hf) / row.hfg;
+          steps.push(`x = (h - hf) / hfg = (${known.h} - ${slFmt(row.hf)}) / ${slFmt(row.hfg)} = ${slFmt(xCalc)}`);
+          row.x = xCalc;
+          row.h = known.h;
+          row.s = row.sf + xCalc*row.sfg;
+          row.v = row.vf + xCalc*(row.vg-row.vf);
+          phase = slPhaseDesc(xCalc);
+        }
+      } else if (known.x !== undefined) {
+        const xCalc = known.x;
+        row.x = xCalc;
+        row.h = row.hf + xCalc*row.hfg;
+        row.s = row.sf + xCalc*row.sfg;
+        row.v = row.vf + xCalc*(row.vg-row.vf);
+        phase = slPhaseDesc(xCalc);
+        steps.push(`h = hf + x·hfg = ${slFmt(row.hf)} + ${xCalc}×${slFmt(row.hfg)} = ${slFmt(row.h)} kJ/kg`);
+        steps.push(`s = sf + x·sfg = ${slFmt(row.sf)} + ${xCalc}×${slFmt(row.sfg)} = ${slFmt(row.s)} kJ/kg·K`);
+        steps.push(`v = vf + x·(vg−vf) = ${slFmt(row.vf)} + ${xCalc}×${slFmt(row.vg-row.vf)} = ${slFmt(row.v)} m³/kg`);
+      } else if (known.s !== undefined) {
+        if (known.s < row.sf) { phase = 'Compressed liquid'; }
+        else if (known.s > row.sg) { phase = 'Superheated vapor'; }
+        else {
+          const xCalc = (known.s - row.sf) / row.sfg;
+          row.x = xCalc;
+          row.h = row.hf + xCalc*row.hfg;
+          row.s = known.s;
+          row.v = row.vf + xCalc*(row.vg-row.vf);
+          phase = slPhaseDesc(xCalc);
+          steps.push(`x = (s - sf) / sfg = (${known.s} - ${slFmt(row.sf)}) / ${slFmt(row.sfg)} = ${slFmt(xCalc)}`);
+        }
+      } else {
+        phase = 'Saturated (at given T) — provide h, s, or x for mixture properties';
+        row.Psat = row.Psat;
+      }
+      row.P = row.P || row.Psat;
+      steps.unshift(`Interpolate Steam Sat-T table at T = ${known.T}°C (fraction = ${slFmt(row._f,4)})`);
+    }
+  }
+  // Case 2: P known → look up sat table by P
+  else if (known.P !== undefined) {
+    row = slLinInterp(STEAM_SAT_P_FULL, 'P', known.P);
+    if (row) {
+      row.T = row.T || row.Tsat;
+      if (known.x !== undefined) {
+        row.x = known.x;
+        row.h = row.hf + known.x*row.hfg;
+        row.s = row.sf + known.x*row.sfg;
+        row.v = row.vf + known.x*(row.vg-row.vf);
+        phase = slPhaseDesc(known.x);
+        steps.push(`T_sat = ${slFmt(row.Tsat)} °C`);
+        steps.push(`h = hf + x·hfg = ${slFmt(row.hf)} + ${known.x}×${slFmt(row.hfg)} = ${slFmt(row.h)} kJ/kg`);
+        steps.push(`s = sf + x·sfg = ${slFmt(row.sf)} + ${known.x}×${slFmt(row.sfg)} = ${slFmt(row.s)} kJ/kg·K`);
+      } else if (known.h !== undefined) {
+        if (known.h <= row.hf) { phase='Compressed liquid'; }
+        else if (known.h >= row.hg) { phase='Superheated vapor'; }
+        else {
+          const xCalc=(known.h-row.hf)/row.hfg;
+          row.x=xCalc; row.h=known.h;
+          row.s=row.sf+xCalc*row.sfg;
+          row.v=row.vf+xCalc*(row.vg-row.vf);
+          phase=slPhaseDesc(xCalc);
+          steps.push(`x = (h−hf)/hfg = (${known.h}−${slFmt(row.hf)})/${slFmt(row.hfg)} = ${slFmt(xCalc)}`);
+        }
+      } else {
+        phase = 'Saturated at given P';
+      }
+      steps.unshift(`Interpolate Steam Sat-P table at P = ${known.P} kPa (fraction = ${slFmt(row._f,4)})`);
+    }
+  }
+
+  if (!row) {
+    res.style.display='block';
+    res.innerHTML=`<div style="color:var(--yellow);font-size:12px;font-family:'DM Mono',monospace;">ยังไม่รองรับชุดค่านี้ — ลองป้อน T หรือ P ร่วมกับ x, h, หรือ s</div>`;
+    return;
+  }
+
+  // Interpolate additional sat-liq properties for density/Cp/viscosity/k
+  const Tval = row.T || row.Tsat || 0;
+  // Simple sat-liq property lookup for water (approximate)
+  // rho_f [kg/m3], Cp_f [kJ/kgK], mu_f [mPas], k_f [W/mK]
+  const SAT_LIQ_W=[
+    [-10,1000,4.271,1.792,0.565],[0,999.8,4.218,1.792,0.569],[10,999.7,4.192,1.306,0.582],
+    [20,998.2,4.182,1.002,0.598],[30,995.7,4.178,0.798,0.615],[40,992.2,4.179,0.653,0.630],
+    [50,988.1,4.181,0.548,0.644],[60,983.2,4.184,0.467,0.658],[70,977.8,4.187,0.404,0.670],
+    [80,971.8,4.195,0.355,0.680],[90,965.3,4.208,0.315,0.689],[100,958.4,4.216,0.282,0.697],
+    [120,943.1,4.232,0.232,0.708],[140,926.1,4.257,0.197,0.713],[160,907.4,4.285,0.170,0.715],
+    [180,887.3,4.321,0.150,0.712],[200,865.5,4.369,0.134,0.703],[220,841.8,4.438,0.121,0.688],
+    [240,815.9,4.531,0.111,0.670],[260,787.5,4.658,0.102,0.648],[280,756.5,4.836,0.094,0.621],
+    [300,712.7,5.131,0.086,0.576],
+  ];
+  function liqProp(T){
+    const d=SAT_LIQ_W;
+    for(let i=0;i<d.length-1;i++){
+      if(d[i][0]<=T&&d[i+1][0]>=T){
+        const f=(T-d[i][0])/(d[i+1][0]-d[i][0]);
+        return {rho:d[i][1]+f*(d[i+1][1]-d[i][1]),Cp:d[i][2]+f*(d[i+1][2]-d[i][2]),mu:d[i][3]+f*(d[i+1][3]-d[i][3]),k:d[i][4]+f*(d[i+1][4]-d[i][4])};
+      }
+    }
+    return null;
+  }
+  const lp=liqProp(Tval);
+  const rho_f=lp?.rho, Cp_f=lp?.Cp, mu_f=lp?.mu, k_f=lp?.k;
+  // Vapor density
+  const rho_g=row.vg?1/row.vg:undefined;
+  // Quality-weighted properties (if mixture)
+  const xv=row.x;
+  const rho_mix=(xv!==undefined&&rho_f&&rho_g)?1/(xv/rho_g+(1-xv)/rho_f):undefined;
+
+  const vals = [
+    ['Temperature',   row.T||row.Tsat, '°C'],
+    ['Pressure',      row.P||row.Psat, 'kPa'],
+    ['Enthalpy (h)',  row.h, 'kJ/kg'],
+    ['Entropy (s)',   row.s, 'kJ/kg·K'],
+    ['Spec. Volume',  row.v, 'm³/kg'],
+    ['Quality (x)',   row.x, '—'],
+    ['Phase',         null, phase],
+    ['— Sat. values —', null, '—'],
+    ['hf / hg',       row.hf, `${slFmt(row.hf)} / ${slFmt(row.hg)} kJ/kg`],
+    ['sf / sg',       row.sf, `${slFmt(row.sf)} / ${slFmt(row.sg)} kJ/kg·K`],
+    ['vf / vg',       row.vf, `${slFmt(row.vf)} / ${slFmt(row.vg)} m³/kg`],
+    ['— Fluid props —', null, '—'],
+    ['Density (f)',   rho_f, 'kg/m³'],
+    ['Density (g)',   rho_g, 'kg/m³'],
+    ['Heat Cap. Cp',  Cp_f, 'kJ/kg·K'],
+    ['Dyn. Viscosity',mu_f, 'mPa·s'],
+    ['Thermal Cond.', k_f, 'W/m·K'],
+  ];
+
+  res.style.display = 'block';
+  res.innerHTML = `
+    <div style="border:1px solid var(--acc);border-radius:8px;overflow:hidden;margin-top:4px;">
+      <div style="background:var(--acc);color:var(--bg);padding:8px 12px;font-size:10px;font-family:'DM Mono',monospace;font-weight:600;">
+        State: ${phase}
+      </div>
+      <table style="width:100%;border-collapse:collapse;font-family:'DM Mono',monospace;font-size:11px;">
+        ${vals.map(([k,v,u])=>{
+          if(k.startsWith('—')){
+            return `<tr style="background:rgba(255,255,255,.04);"><td colspan="3" style="padding:4px 10px;font-size:9px;color:var(--dim);">${k}</td></tr>`;
+          }
+          if(v===null){
+            return `<tr style="border-bottom:1px solid var(--border);">
+              <td style="padding:6px 10px;color:var(--dim);width:38%;">${k}</td>
+              <td colspan="2" style="padding:6px 10px;color:var(--fg);">${u}</td>
+            </tr>`;
+          }
+          const lk=k.split(' ')[0].toLowerCase().replace(/[^a-z]/g,'');
+          const isKnown=known[lk]!==undefined||known[k.toLowerCase()]!==undefined;
+          const disp=typeof u==='string'&&u.includes('/')&&u.includes('kJ')?u:slFmt(v);
+          const unit2=typeof u==='string'&&u.includes('/')&&u.includes('kJ')?'':u;
+          return `<tr style="border-bottom:1px solid var(--border);">
+            <td style="padding:6px 10px;color:var(--dim);width:38%;">${k}</td>
+            <td style="padding:6px 10px;color:${isKnown?'var(--acc)':'var(--fg)'};font-weight:${isKnown?'700':'400'};">${disp}</td>
+            <td style="padding:6px 10px;color:var(--dim);">${unit2}</td>
+          </tr>`;
+        }).join('')}
+      </table>
+      ${steps.length?`
+      <div style="padding:10px;border-top:1px solid var(--border);font-size:10px;font-family:'DM Mono',monospace;color:var(--fg2);line-height:1.8;">
+        <div style="color:var(--dim);margin-bottom:4px;">วิธีคำนวณ:</div>
+        ${steps.map(s=>`<div>• ${s}</div>`).join('')}
+      </div>`:''}
+    </div>`;
+}
+
 
 function buildTableBody(){
   const body=document.getElementById('calc-body');if(!body)return;
@@ -3943,7 +4310,7 @@ let fscCalcCat='thermo';
 function fscBuildCalcTabs(){
   const tabsEl=document.getElementById('fsc-calc-tabs');
   if(!tabsEl)return;
-  const cats=CALC_CATS.filter(c=>c.id!=='sci'&&c.id!=='tables'&&c.id!=='convert');
+  const cats=CALC_CATS.filter(c=>c.id!=='sci'&&c.id!=='tables'&&c.id!=='convert'&&c.id!=='state'&&c.id!=='ph');
   tabsEl.innerHTML=cats.map(c=>`<span class="fsc-ctab ${c.id===fscCalcCat?'active':''}" onclick="fscSelectCalcCat('${c.id}')">${currentLang==='th'?c.nameTh:c.nameEn}</span>`).join('');
   fscBuildCalcBody();
 }
@@ -4088,12 +4455,694 @@ function toggleFscPin(){
   });
 })();
 
+
+// ── P-h DIAGRAM (ข้อ 3) ──
+
+// ── R22 Saturation data (P in bar, h in kJ/kg, s in kJ/kgK, T in °C) ──
+const R22_SAT = [
+  {T:-60,P:0.375,hf:144.6,hg:388.9,sf:0.775,sg:1.842},
+  {T:-50,P:0.645,hf:155.0,hg:394.3,sf:0.820,sg:1.815},
+  {T:-40,P:1.055,hf:165.8,hg:399.7,sf:0.866,sg:1.791},
+  {T:-30,P:1.645,hf:177.0,hg:405.2,sf:0.913,sg:1.769},
+  {T:-20,P:2.454,hf:188.4,hg:410.6,sf:0.960,sg:1.749},
+  {T:-10,P:3.543,hf:200.0,hg:416.0,sf:1.007,sg:1.731},
+  {T:0,  P:4.974,hf:212.0,hg:421.2,sf:1.054,sg:1.714},
+  {T:10, P:6.813,hf:224.3,hg:426.3,sf:1.100,sg:1.699},
+  {T:20, P:9.126,hf:236.9,hg:431.2,sf:1.147,sg:1.684},
+  {T:30, P:11.98,hf:249.9,hg:435.7,sf:1.194,sg:1.671},
+  {T:40, P:15.45,hf:263.3,hg:440.0,sf:1.240,sg:1.658},
+  {T:50, P:19.60,hf:277.2,hg:443.9,sf:1.287,sg:1.645},
+  {T:60, P:24.52,hf:291.6,hg:447.2,sf:1.334,sg:1.632},
+  {T:70, P:30.27,hf:306.7,hg:449.9,sf:1.381,sg:1.619},
+  {T:80, P:36.95,hf:322.6,hg:451.8,sf:1.429,sg:1.605},
+  {T:90, P:44.65,hf:339.5,hg:452.5,sf:1.478,sg:1.590},
+  {T:96.15,P:49.90,hf:391.5,hg:391.5,sf:1.562,sg:1.562}, // critical
+];
+
+// R22 superheated vapor: {P(bar): [{T, h, s}, ...]}
+const R22_SUPER = {
+  1: [{T:-40,h:388.9,s:1.842},{T:-20,h:399.3,s:1.889},{T:0,h:409.9,s:1.935},
+      {T:20,h:420.7,s:1.980},{T:40,h:431.7,s:2.024},{T:60,h:443.0,s:2.067},
+      {T:80,h:454.5,s:2.110},{T:100,h:466.3,s:2.151},{T:120,h:478.4,s:2.192}],
+  2: [{T:-20,h:397.0,s:1.826},{T:0,h:407.9,s:1.873},{T:20,h:418.9,s:1.918},
+      {T:40,h:430.1,s:1.963},{T:60,h:441.5,s:2.006},{T:80,h:453.2,s:2.049},
+      {T:100,h:465.1,s:2.091},{T:120,h:477.3,s:2.132}],
+  4: [{T:0,h:404.6,s:1.793},{T:20,h:416.1,s:1.840},{T:40,h:427.7,s:1.886},
+      {T:60,h:439.4,s:1.930},{T:80,h:451.4,s:1.973},{T:100,h:463.5,s:2.015},
+      {T:120,h:475.9,s:2.057}],
+  8: [{T:20,h:411.2,s:1.771},{T:40,h:423.4,s:1.819},{T:60,h:435.6,s:1.864},
+      {T:80,h:447.9,s:1.908},{T:100,h:460.4,s:1.951},{T:120,h:472.9,s:1.993}],
+  12:[{T:40,h:418.9,s:1.774},{T:60,h:431.7,s:1.820},{T:80,h:444.4,s:1.864},
+      {T:100,h:457.2,s:1.908},{T:120,h:470.1,s:1.950}],
+  16:[{T:60,h:427.7,s:1.786},{T:80,h:441.0,s:1.832},{T:100,h:454.2,s:1.876},
+      {T:120,h:467.4,s:1.919}],
+  20:[{T:60,h:423.2,s:1.758},{T:80,h:437.3,s:1.806},{T:100,h:451.1,s:1.851},
+      {T:120,h:464.7,s:1.894}],
+  30:[{T:80,h:428.5,s:1.765},{T:100,h:443.3,s:1.812},{T:120,h:457.9,s:1.857}],
+  40:[{T:100,h:434.6,s:1.773},{T:120,h:450.6,s:1.820}],
+};
+
+// R22 State lookup: extended properties via interpolation
+const R22_PROPS = {
+  // Sat liquid density, Cp, viscosity, thermal conductivity
+  // [T, rho_f(kg/m3), Cp_f(kJ/kgK), mu_f(mPas), k_f(W/mK)]
+  satLiq: [
+    [-40,1296,1.087,0.294,0.106],[-30,1270,1.103,0.257,0.101],
+    [-20,1241,1.122,0.225,0.096],[-10,1210,1.143,0.196,0.090],
+    [0,  1177,1.167,0.170,0.085],[10,1142,1.194,0.147,0.080],
+    [20,1104,1.226,0.127,0.075],[30,1062,1.264,0.109,0.069],
+    [40,1016,1.314,0.092,0.063],[50, 964,1.384,0.077,0.057],
+    [60, 903,1.491,0.063,0.051],[70, 827,1.701,0.050,0.044],
+  ],
+};
+
+let phRefrigerant = 'R22';
+let phCyclePoints = [];
+
+// ═══════════════════════════════════════════════════
+// P-h DIAGRAM  — proper textbook style
+// R22 data: SI units, P in bar, h in kJ/kg, s in kJ/kg·K, T in °C
+// ═══════════════════════════════════════════════════
+
+// Saturation curve
+const R22_SAT_PH = [
+  {T:-60,P:0.376, hf:144.6,hg:387.3,sf:0.7759,sg:1.8429},
+  {T:-50,P:0.645, hf:155.0,hg:393.0,sf:0.8196,sg:1.8154},
+  {T:-40,P:1.055, hf:165.8,hg:398.7,sf:0.8621,sg:1.7904},
+  {T:-30,P:1.645, hf:177.1,hg:404.5,sf:0.9051,sg:1.7671},
+  {T:-20,P:2.454, hf:188.4,hg:410.3,sf:0.9474,sg:1.7449},
+  {T:-10,P:3.543, hf:200.0,hg:415.9,sf:0.9892,sg:1.7238},
+  {T:0,  P:4.974, hf:211.7,hg:421.3,sf:1.0306,sg:1.7031},
+  {T:10, P:6.813, hf:223.7,hg:426.4,sf:1.0716,sg:1.6833},
+  {T:20, P:9.126, hf:235.9,hg:431.2,sf:1.1122,sg:1.6636},
+  {T:30, P:11.98, hf:248.4,hg:435.5,sf:1.1526,sg:1.6436},
+  {T:40, P:15.45, hf:261.2,hg:439.3,sf:1.1926,sg:1.6231},
+  {T:50, P:19.60, hf:274.5,hg:442.3,sf:1.2326,sg:1.6013},
+  {T:60, P:24.52, hf:288.2,hg:444.7,sf:1.2726,sg:1.5779},
+  {T:70, P:30.27, hf:302.6,hg:446.0,sf:1.3130,sg:1.5524},
+  {T:80, P:36.95, hf:317.8,hg:446.2,sf:1.3542,sg:1.5241},
+  {T:90, P:44.65, hf:334.3,hg:444.5,sf:1.3970,sg:1.4913},
+  {T:96.15,P:49.90,hf:391.5,hg:391.5,sf:1.5618,sg:1.5618},
+];
+
+// Superheated vapor: [T°C, h kJ/kg, s kJ/kg·K] at each pressure
+const R22_SH = {
+  1.0: [{T:-50,h:388.0,s:1.842},{T:-40,h:394.2,s:1.869},{T:-30,h:400.5,s:1.895},{T:-20,h:406.8,s:1.921},{T:-10,h:413.2,s:1.947},{T:0,h:419.7,s:1.972},{T:10,h:426.3,s:1.997},{T:20,h:433.0,s:2.022},{T:30,h:439.8,s:2.046},{T:40,h:446.7,s:2.070},{T:50,h:453.7,s:2.094},{T:60,h:460.8,s:2.118},{T:80,h:475.4,s:2.164},{T:100,h:490.3,s:2.209},{T:120,h:505.6,s:2.253}],
+  2.0: [{T:-30,h:398.5,s:1.831},{T:-20,h:405.1,s:1.858},{T:-10,h:411.7,s:1.884},{T:0,h:418.4,s:1.910},{T:10,h:425.2,s:1.935},{T:20,h:432.1,s:1.960},{T:30,h:439.1,s:1.984},{T:40,h:446.1,s:2.008},{T:50,h:453.3,s:2.032},{T:60,h:460.5,s:2.056},{T:80,h:475.2,s:2.102},{T:100,h:490.2,s:2.148},{T:120,h:505.5,s:2.192}],
+  4.0: [{T:-10,h:409.8,s:1.831},{T:0,h:416.8,s:1.857},{T:10,h:423.8,s:1.883},{T:20,h:430.9,s:1.908},{T:30,h:438.1,s:1.933},{T:40,h:445.4,s:1.957},{T:50,h:452.7,s:1.981},{T:60,h:460.1,s:2.005},{T:80,h:475.0,s:2.051},{T:100,h:490.0,s:2.097},{T:120,h:505.4,s:2.141}],
+  6.0: [{T:0,h:414.8,s:1.816},{T:10,h:422.2,s:1.842},{T:20,h:429.6,s:1.868},{T:30,h:437.1,s:1.893},{T:40,h:444.6,s:1.918},{T:50,h:452.2,s:1.942},{T:60,h:459.9,s:1.966},{T:80,h:474.9,s:2.013},{T:100,h:490.0,s:2.059},{T:120,h:505.4,s:2.103}],
+  8.0: [{T:10,h:420.5,s:1.828},{T:20,h:428.2,s:1.854},{T:30,h:436.0,s:1.879},{T:40,h:443.8,s:1.904},{T:50,h:451.7,s:1.929},{T:60,h:459.7,s:1.953},{T:80,h:474.8,s:2.000},{T:100,h:489.9,s:2.046},{T:120,h:505.3,s:2.090}],
+  12.0:[{T:20,h:425.2,s:1.837},{T:30,h:433.5,s:1.863},{T:40,h:441.8,s:1.888},{T:50,h:450.2,s:1.913},{T:60,h:458.6,s:1.938},{T:80,h:474.4,s:1.986},{T:100,h:489.8,s:2.033},{T:120,h:505.2,s:2.078}],
+  16.0:[{T:30,h:430.9,s:1.849},{T:40,h:439.6,s:1.875},{T:50,h:448.5,s:1.900},{T:60,h:457.4,s:1.925},{T:80,h:474.1,s:1.974},{T:100,h:489.7,s:2.020},{T:120,h:505.2,s:2.066}],
+  20.0:[{T:40,h:437.1,s:1.862},{T:50,h:446.5,s:1.888},{T:60,h:455.9,s:1.914},{T:80,h:473.6,s:1.963},{T:100,h:489.5,s:2.009},{T:120,h:505.1,s:2.055}],
+  25.0:[{T:50,h:443.4,s:1.873},{T:60,h:453.4,s:1.899},{T:80,h:472.8,s:1.949},{T:100,h:489.0,s:1.996},{T:120,h:504.9,s:2.042}],
+  30.0:[{T:60,h:450.4,s:1.884},{T:70,h:460.9,s:1.911},{T:80,h:471.5,s:1.937},{T:100,h:488.5,s:1.985},{T:120,h:504.7,s:2.031}],
+  40.0:[{T:80,h:467.6,s:1.913},{T:90,h:479.1,s:1.940},{T:100,h:487.2,s:1.961},{T:120,h:504.0,s:2.009}],
+};
+
+const R134A_SAT_PH = [
+  {T:-60,P:0.159, hf:134.0,hg:370.0,sf:0.712,sg:1.774},
+  {T:-50,P:0.293, hf:148.1,hg:377.0,sf:0.776,sg:1.746},
+  {T:-40,P:0.512, hf:162.7,hg:384.0,sf:0.839,sg:1.720},
+  {T:-30,P:0.844, hf:177.7,hg:391.0,sf:0.901,sg:1.695},
+  {T:-20,P:1.327, hf:193.0,hg:397.9,sf:0.962,sg:1.671},
+  {T:-10,P:2.007, hf:208.6,hg:404.6,sf:1.022,sg:1.648},
+  {T:0,  P:2.928, hf:224.6,hg:411.1,sf:1.081,sg:1.626},
+  {T:10, P:4.146, hf:241.0,hg:417.3,sf:1.139,sg:1.604},
+  {T:20, P:5.728, hf:257.9,hg:423.1,sf:1.197,sg:1.583},
+  {T:30, P:7.706, hf:275.3,hg:428.5,sf:1.254,sg:1.561},
+  {T:40, P:10.17, hf:293.3,hg:433.3,sf:1.311,sg:1.539},
+  {T:50, P:13.19, hf:312.1,hg:437.3,sf:1.369,sg:1.516},
+  {T:60, P:16.83, hf:331.7,hg:440.3,sf:1.428,sg:1.491},
+  {T:70, P:21.17, hf:352.5,hg:441.9,sf:1.487,sg:1.462},
+  {T:80, P:26.28, hf:374.7,hg:441.6,sf:1.549,sg:1.430},
+  {T:101.1,P:40.59,hf:389.6,hg:389.6,sf:1.562,sg:1.562},
+];
+
+function buildPhDiagram() {
+  const body = document.getElementById('calc-body');
+  if (!body) return;
+  body.style.cssText = 'padding:0;overflow:hidden;display:flex;flex-direction:column;';
+  body.innerHTML = `
+    <div style="flex:1;display:flex;flex-direction:column;overflow:hidden;padding:8px;gap:6px;">
+
+      <!-- Row 1: Refrigerant + Pressure Unit -->
+      <div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap;flex-shrink:0;">
+        <select id="ph-ref" onchange="phCalcFromInputs()" style="background:var(--bar2);border:1px solid var(--border2);border-radius:6px;color:var(--fg);font-size:11px;padding:4px 8px;font-family:'DM Mono',monospace;">
+          <option value="R134a">R-134a</option>
+          <option value="R22">R-22</option>
+        </select>
+        <select id="ph-punit" onchange="phCalcFromInputs()" style="background:var(--bar2);border:1px solid var(--border2);border-radius:6px;color:var(--fg);font-size:11px;padding:4px 8px;font-family:'DM Mono',monospace;">
+          <option value="bar">bar</option>
+          <option value="kPa">kPa</option>
+          <option value="MPa">MPa</option>
+          <option value="psia">psia</option>
+          <option value="atm">atm</option>
+        </select>
+        <span style="font-size:9px;color:var(--dim);font-family:'DM Mono',monospace;">P-h Diagram</span>
+      </div>
+
+      <!-- Row 2: Inputs grid -->
+      <div style="background:var(--bar2);border:1px solid var(--border);border-radius:8px;padding:8px 10px;flex-shrink:0;">
+        <div style="font-size:9px;color:var(--dim);font-family:'DM Mono',monospace;margin-bottom:6px;">ป้อน T หรือ P — ถ้าใส่ทั้งคู่จะใช้ P (ใส่ 0 เพื่อคำนวณจาก T)</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
+          <!-- Evaporator -->
+          <div style="border:1px solid #3a9e6e44;border-radius:6px;padding:6px;">
+            <div style="font-size:9px;color:#3a9e6e;font-family:'DM Mono',monospace;font-weight:700;margin-bottom:4px;">① EVAPORATOR</div>
+            <div style="display:flex;align-items:center;gap:3px;margin-bottom:3px;">
+              <span style="font-size:9px;color:var(--dim);width:18px;">T</span>
+              <input id="ph-tl" type="number" value="-20" style="flex:1;background:none;border:1px solid var(--border2);border-radius:4px;color:var(--fg);font-size:12px;font-family:'DM Mono',monospace;outline:none;padding:3px 5px;">
+              <span style="font-size:9px;color:var(--dim);">°C</span>
+            </div>
+            <div style="display:flex;align-items:center;gap:3px;margin-bottom:3px;">
+              <span style="font-size:9px;color:var(--dim);width:18px;">P</span>
+              <input id="ph-pl" type="number" value="0" placeholder="0=auto" style="flex:1;background:none;border:1px solid var(--border2);border-radius:4px;color:var(--fg);font-size:12px;font-family:'DM Mono',monospace;outline:none;padding:3px 5px;">
+              <span id="ph-punit-lbl1" style="font-size:9px;color:var(--dim);">bar</span>
+            </div>
+            <div style="font-size:9px;color:var(--dim);font-family:'DM Mono',monospace;">SH: <input id="ph-sh" type="number" value="0" style="width:32px;background:none;border:none;border-bottom:1px solid var(--border2);color:var(--fg);font-size:11px;font-family:'DM Mono',monospace;outline:none;padding:1px 2px;text-align:center;"> °C</div>
+          </div>
+          <!-- Condenser -->
+          <div style="border:1px solid #e0504444;border-radius:6px;padding:6px;">
+            <div style="font-size:9px;color:#e05050;font-family:'DM Mono',monospace;font-weight:700;margin-bottom:4px;">③ CONDENSER</div>
+            <div style="display:flex;align-items:center;gap:3px;margin-bottom:3px;">
+              <span style="font-size:9px;color:var(--dim);width:18px;">T</span>
+              <input id="ph-th" type="number" value="40" style="flex:1;background:none;border:1px solid var(--border2);border-radius:4px;color:var(--fg);font-size:12px;font-family:'DM Mono',monospace;outline:none;padding:3px 5px;">
+              <span style="font-size:9px;color:var(--dim);">°C</span>
+            </div>
+            <div style="display:flex;align-items:center;gap:3px;margin-bottom:3px;">
+              <span style="font-size:9px;color:var(--dim);width:18px;">P</span>
+              <input id="ph-ph" type="number" value="0" placeholder="0=auto" style="flex:1;background:none;border:1px solid var(--border2);border-radius:4px;color:var(--fg);font-size:12px;font-family:'DM Mono',monospace;outline:none;padding:3px 5px;">
+              <span id="ph-punit-lbl2" style="font-size:9px;color:var(--dim);">bar</span>
+            </div>
+            <div style="font-size:9px;color:var(--dim);font-family:'DM Mono',monospace;">SC: <input id="ph-sc" type="number" value="0" style="width:32px;background:none;border:none;border-bottom:1px solid var(--border2);color:var(--fg);font-size:11px;font-family:'DM Mono',monospace;outline:none;padding:1px 2px;text-align:center;"> °C</div>
+          </div>
+        </div>
+        <div style="margin-top:7px;display:flex;gap:6px;">
+          <button class="tbtn" onclick="phCalcFromInputs()" style="flex:1;padding:5px;">Calculate & Plot</button>
+          <button class="tbtn" onclick="phReset()" style="padding:5px 10px;font-size:10px;">Reset</button>
+        </div>
+      </div>
+
+      <!-- Point cards -->
+      <div id="ph-pts-display" style="display:grid;grid-template-columns:repeat(4,1fr);gap:4px;flex-shrink:0;"></div>
+
+      <!-- COP summary -->
+      <div id="ph-cop" style="font-size:10px;font-family:'DM Mono',monospace;color:var(--acc);min-height:14px;flex-shrink:0;"></div>
+
+      <!-- SVG -->
+      <div style="flex:1;overflow:auto;min-height:100px;">
+        <svg id="ph-svg" viewBox="0 0 700 430" style="width:100%;min-width:340px;display:block;"></svg>
+      </div>
+    </div>`;
+
+  phCalcFromInputs();
+}
+
+// stored cycle points
+let phCycle = [];
+
+function phReset(){
+  document.getElementById('ph-tl').value='-20';
+  document.getElementById('ph-th').value='40';
+  document.getElementById('ph-pl').value='0';
+  document.getElementById('ph-ph').value='0';
+  document.getElementById('ph-sh').value='0';
+  document.getElementById('ph-sc').value='0';
+  phCalcFromInputs();
+}
+
+function phLinInterp(arr,key,val){
+  const s=[...arr].sort((a,b)=>a[key]-b[key]);
+  for(let i=0;i<s.length-1;i++){
+    if(s[i][key]<=val&&s[i+1][key]>=val){
+      const f=(val-s[i][key])/(s[i+1][key]-s[i][key]);
+      const r={};Object.keys(s[i]).forEach(k=>{r[k]=s[i][k]+f*(s[i+1][k]-s[i][k]);});
+      return r;
+    }
+  }
+  return s[s.length-1];
+}
+
+// Pressure unit conversions (from bar)
+function phPconv(bar, unit){
+  if(unit==='bar') return bar;
+  if(unit==='kPa') return bar*100;
+  if(unit==='MPa') return bar*0.1;
+  if(unit==='psia') return bar*14.5038;
+  if(unit==='atm') return bar*0.986923;
+  return bar;
+}
+// From display unit → bar
+function phPtoBar(val, unit){
+  if(unit==='bar') return val;
+  if(unit==='kPa') return val/100;
+  if(unit==='MPa') return val*10;
+  if(unit==='psia') return val/14.5038;
+  if(unit==='atm') return val/0.986923;
+  return val;
+}
+
+function phCalcFromInputs(){
+  const ref=document.getElementById('ph-ref')?.value||'R134a';
+  const punit=document.getElementById('ph-punit')?.value||'bar';
+  const SAT=ref==='R22'?R22_SAT_PH:R134A_SAT_PH;
+  ['ph-punit-lbl1','ph-punit-lbl2'].forEach(id=>{const el=document.getElementById(id);if(el)el.textContent=punit;});
+
+  const TL=parseFloat(document.getElementById('ph-tl')?.value??-20)||(-20);
+  const TH=parseFloat(document.getElementById('ph-th')?.value??40)||40;
+  const PLdisp=parseFloat(document.getElementById('ph-pl')?.value)||0;
+  const PHdisp=parseFloat(document.getElementById('ph-ph')?.value)||0;
+  const superheat=parseFloat(document.getElementById('ph-sh')?.value)||0;
+  const subcool=parseFloat(document.getElementById('ph-sc')?.value)||0;
+
+  const satL=phLinInterp(SAT,'T',TL);
+  const satH=phLinInterp(SAT,'T',TH);
+  if(!satL||!satH)return;
+
+  let PL_bar=(PLdisp>0)?phPtoBar(PLdisp,punit):satL.P;
+  let PH_bar=(PHdisp>0)?phPtoBar(PHdisp,punit):satH.P;
+  if(PL_bar<=0||PH_bar<=0||PL_bar>=PH_bar){
+    const copEl=document.getElementById('ph-cop');
+    if(copEl)copEl.innerHTML='<span style="color:#f05050">⚠ ตรวจสอบค่า: ต้องการ P_evap < P_cond</span>';
+    return;
+  }
+
+  const satAtPL=(PLdisp>0)?phLinInterp(SAT,'P',PL_bar):satL;
+  const satAtPH=(PHdisp>0)?phLinInterp(SAT,'P',PH_bar):satH;
+
+  // Point 1: evap exit — sat vapor + superheat
+  // cp_vap: R22=0.74 kJ/kg·K, R134a=0.84 kJ/kg·K (ASHRAE)
+  const cp_vap=ref==='R22'?0.74:0.84;
+  let h1=satAtPL.hg,s1=satAtPL.sg,T1=satAtPL.T;
+  if(superheat>0){
+    h1=satAtPL.hg+cp_vap*superheat;
+    s1=satAtPL.sg+cp_vap*Math.log((T1+273.15+superheat)/(T1+273.15));
+    T1=T1+superheat;
+  }
+
+  // Point 2: isentropic compression — k-ratio ideal gas method
+  // k: R22=1.14 (Çengel/Thai textbook std), R134a=1.13 (ASHRAE Fundamentals)
+  const k=ref==='R22'?1.14:1.13;
+  const T2_K=(T1+273.15)*Math.pow(PH_bar/PL_bar,(k-1)/k);
+  const T2=T2_K-273.15;
+  const h2=h1+cp_vap*(T2-(T1));
+
+  // Point 3: cond exit — sat liquid − subcool
+  // cp_liq: R22=1.26 kJ/kg·K, R134a=1.46 kJ/kg·K
+  const cp_liq=ref==='R22'?1.26:1.46;
+  const h3=satAtPH.hf-cp_liq*subcool;
+  const T3=satAtPH.T-subcool;
+
+  // Point 4: throttle — isenthalpic
+  const h4=h3;
+  const x4=Math.max(0,Math.min(1,(h4-satAtPL.hf)/(satAtPL.hg-satAtPL.hf)));
+
+  // Energy balance: qH = qC + W  (1st Law check)
+  const qC=h1-h4, W_comp=h2-h1, qH_out=h2-h3;
+  const balErr=Math.abs(qH_out-qC-W_comp);
+
+  // Carnot COP (ideal cycle at same saturation temperatures)
+  const TL_K=satAtPL.T+273.15, TH_K=satAtPH.T+273.15;
+  const COP_actual=(W_comp>0)?qC/W_comp:0;
+  const COP_carnot=(TH_K>TL_K)?TL_K/(TH_K-TL_K):0;
+  const eta_2nd=(COP_carnot>0)?Math.min(100,COP_actual/COP_carnot*100):0;
+  const PR=PH_bar/PL_bar;
+
+  phCycle=[
+    {label:'1',desc:'Evap. exit', T:T1,         P:PL_bar,h:h1,s:s1,  note:superheat>0?`SH+${superheat}°C`:'Sat. vapor'},
+    {label:'2',desc:'Comp. exit', T:T2,         P:PH_bar,h:h2,s:s1,  note:`${T2.toFixed(1)}°C`},
+    {label:'3',desc:'Cond. exit', T:T3,         P:PH_bar,h:h3,s:null,note:subcool>0?`SC-${subcool}°C`:'Sat. liquid'},
+    {label:'4',desc:'Exp. exit',  T:satAtPL.T,  P:PL_bar,h:h4,s:null,note:`x=${x4.toFixed(3)}`},
+  ];
+
+  // Point cards (4 columns)
+  const COLORS=['#3aB87e','#f0a040','#f05050','#4fa0e0'];
+  const NAMES=['Evaporator','Compressor','Condenser','Expansion'];
+  const disp=document.getElementById('ph-pts-display');
+  const fmtP=v=>phPconv(v,punit).toFixed(punit==='MPa'?3:punit==='bar'?2:1);
+  if(disp)disp.innerHTML=phCycle.map((p,i)=>`
+    <div style="background:var(--bar2);border:1px solid var(--border);border-radius:7px;padding:5px 7px;border-top:3px solid ${COLORS[i]};">
+      <div style="font-size:8px;color:${COLORS[i]};font-family:'DM Mono',monospace;font-weight:700;margin-bottom:3px;">● ${p.label} ${NAMES[i]}</div>
+      <div style="font-size:9px;font-family:'DM Mono',monospace;color:var(--fg);line-height:1.7;">
+        P = ${fmtP(p.P)} ${punit}<br>
+        h = ${p.h.toFixed(2)} kJ/kg<br>
+        T = ${p.T.toFixed(1)} °C
+        ${i===3?`<br><span style="color:${COLORS[i]};font-size:8px;">x = ${x4.toFixed(3)}</span>`:''}
+      </div>
+    </div>`).join('');
+
+  // COP summary bar
+  const copEl=document.getElementById('ph-cop');
+  const fP=v=>phPconv(v,punit).toFixed(punit==='MPa'?3:punit==='bar'?2:1);
+  if(copEl)copEl.innerHTML=`
+    <span style="color:#3aB87e;font-weight:700">qC=${qC.toFixed(1)}</span>
+    <span style="color:var(--dim)"> + </span>
+    <span style="color:#f0a040;font-weight:700">W=${W_comp.toFixed(1)}</span>
+    <span style="color:var(--dim)"> = </span>
+    <span style="color:#f05050;font-weight:700">qH=${qH_out.toFixed(1)}</span>
+    <span style="color:var(--dim)"> kJ/kg &nbsp;|&nbsp; </span>
+    <span style="color:var(--acc);font-weight:700">COP=${COP_actual.toFixed(3)}</span>
+    <span style="color:var(--dim)"> / Carnot=${COP_carnot.toFixed(2)} (η₂=${eta_2nd.toFixed(0)}%)</span>
+    <span style="color:var(--dim)"> &nbsp;|&nbsp; PR=${PR.toFixed(2)} &nbsp;|&nbsp; P: ${fP(PL_bar)}→${fP(PH_bar)} ${punit}</span>
+    ${balErr>0.05?`<span style="color:#f05050"> ⚠balance=${balErr.toFixed(3)}</span>`:'<span style="color:var(--dim)"> ✓</span>'}`;
+
+  // Reset view to fit new cycle
+  phView.baseSet=false;
+  drawPhDiagram();
+}
+
+function phInterp(arr,key,val){return phLinInterp(arr,key,val);}
+
+// ── P-h zoom/pan state ──
+let phView={hMin:0,hMax:0,PMin_bar:0,PMax_bar:0,baseSet:false};
+let phDragging=false,phDragStart=null,phDragView=null;
+
+function phInitView(SAT,cycle){
+  const domeHmin=Math.min(...SAT.map(r=>r.hf)),domeHmax=Math.max(...SAT.map(r=>r.hg));
+  const domePmin=Math.min(...SAT.map(r=>r.P)),domePmax=Math.max(...SAT.map(r=>r.P));
+  const hSpan=domeHmax-domeHmin;
+  let hMin=domeHmin-hSpan*0.30,hMax=domeHmax+hSpan*0.30;
+  let PMin_bar=domePmin*0.45,PMax_bar=domePmax*1.20;
+  if(cycle&&cycle.length===4){
+    cycle.forEach(p=>{hMin=Math.min(hMin,p.h-20);hMax=Math.max(hMax,p.h+30);PMin_bar=Math.min(PMin_bar,p.P*0.60);PMax_bar=Math.max(PMax_bar,p.P*1.22);});
+  }
+  phView={hMin:Math.floor(hMin/10)*10,hMax:Math.ceil(hMax/10)*10,PMin_bar,PMax_bar,baseSet:true};
+}
+
+function phZoom(factor){
+  const{hMin,hMax,PMin_bar,PMax_bar}=phView;
+  const hMid=(hMin+hMax)/2,hHalf=(hMax-hMin)/2*factor;
+  const lm=(Math.log(PMin_bar)+Math.log(PMax_bar))/2,lh=Math.log(PMax_bar/PMin_bar)/2*factor;
+  phView={...phView,hMin:hMid-hHalf,hMax:hMid+hHalf,PMin_bar:Math.exp(lm-lh),PMax_bar:Math.exp(lm+lh)};
+  drawPhDiagram();
+}
+
+function phResetView(){
+  phView.baseSet=false;
+  phInitView(document.getElementById('ph-ref')?.value==='R22'?R22_SAT_PH:R134A_SAT_PH,phCycle);
+  drawPhDiagram();
+}
+
+function drawPhDiagram(){
+  const svg=document.getElementById('ph-svg');if(!svg)return;
+  const ref=document.getElementById('ph-ref')?.value||'R134a';
+  const punit=document.getElementById('ph-punit')?.value||'bar';
+  const SAT=ref==='R22'?R22_SAT_PH:R134A_SAT_PH;
+  if(!phView.baseSet)phInitView(SAT,phCycle);
+
+  const{hMin,hMax,PMin_bar,PMax_bar}=phView;
+  const toDisp=p=>phPconv(p,punit);
+  const PMin=toDisp(PMin_bar),PMax=toDisp(PMax_bar);
+  const W=700,H=430,L=66,R=18,TT=34,B=62;
+  const CW=W-L-R,CH=H-TT-B;
+  const toX=h=>L+(h-hMin)/(hMax-hMin)*CW;
+  const toY=Pb=>H-B-(Math.log(toDisp(Pb)/PMin)/Math.log(PMax/PMin))*CH;
+  const clip='url(#phclip)';
+  const css=v=>getComputedStyle(document.documentElement).getPropertyValue(v).trim();
+  const fg=css('--fg')||'#eee',dim=css('--dim')||'#888',acc=css('--acc')||'#8b2020';
+  const C_EVAP='#3aB87e',C_COMP='#f0a040',C_COND='#f05050',C_EXP='#4fa0e0';
+
+  function CR(pts){
+    if(pts.length<2)return'';
+    let d=`M${pts[0][0].toFixed(1)},${pts[0][1].toFixed(1)}`;
+    for(let i=0;i<pts.length-1;i++){
+      const p0=pts[Math.max(0,i-1)],p1=pts[i],p2=pts[i+1],p3=pts[Math.min(pts.length-1,i+2)];
+      const c1x=p1[0]+(p2[0]-p0[0])/6,c1y=p1[1]+(p2[1]-p0[1])/6;
+      const c2x=p2[0]-(p3[0]-p1[0])/6,c2y=p2[1]-(p3[1]-p1[1])/6;
+      d+=` C${c1x.toFixed(1)},${c1y.toFixed(1)} ${c2x.toFixed(1)},${c2y.toFixed(1)} ${p2[0].toFixed(1)},${p2[1].toFixed(1)}`;
+    }
+    return d;
+  }
+
+  let s=`<defs><clipPath id="phclip"><rect x="${L}" y="${TT}" width="${CW}" height="${CH}"/></clipPath></defs>`;
+  s+=`<rect x="${L}" y="${TT}" width="${CW}" height="${CH}" fill="${fg}" fill-opacity="0.03" stroke="${dim}" stroke-width="0.7"/>`;
+
+  // ── Grid h ──
+  const hr=hMax-hMin;
+  const hStep=hr>350?50:hr>180?40:hr>90?20:hr>45?10:5;
+  for(let h=Math.ceil(hMin/hStep)*hStep;h<=hMax;h+=hStep){
+    const x=toX(h);if(x<L-1||x>W-R+1)continue;
+    const maj=h%(hStep*2)===0||hStep<=5;
+    s+=`<line x1="${x.toFixed(1)}" y1="${TT}" x2="${x.toFixed(1)}" y2="${H-B}" stroke="${dim}" stroke-width="${maj?0.4:0.15}" stroke-dasharray="${maj?'2,5':'1,10'}" opacity="${maj?0.4:0.15}"/>`;
+    if(maj&&x>L+4&&x<W-R-4)s+=`<text x="${x.toFixed(1)}" y="${H-B+13}" text-anchor="middle" fill="${dim}" font-size="9" font-family="monospace">${Math.round(h)}</text>`;
+  }
+
+  // ── Grid P log ──
+  [0.05,0.1,0.15,0.2,0.3,0.5,0.8,1,1.5,2,3,5,8,10,15,20,30,40,50,60,80,100,120,150].forEach(Pb=>{
+    if(Pb<PMin_bar*0.98||Pb>PMax_bar*1.02)return;
+    const y=toY(Pb);if(y<TT-1||y>H-B+1)return;
+    const maj=[0.5,1,2,5,10,20,50,100].includes(Pb);
+    s+=`<line x1="${L}" y1="${y.toFixed(1)}" x2="${W-R}" y2="${y.toFixed(1)}" stroke="${dim}" stroke-width="${maj?0.4:0.15}" stroke-dasharray="${maj?'2,5':'1,10'}" opacity="${maj?0.4:0.15}"/>`;
+    if(maj){const Pd=toDisp(Pb);const lbl=punit==='MPa'?Pd.toFixed(Pd<0.1?3:Pd<1?2:1):Pd>=100?Pd.toFixed(0):Pd>=10?Pd.toFixed(1):Pd.toFixed(Pd<1?1:0);s+=`<text x="${L-4}" y="${(y+3.5).toFixed(1)}" text-anchor="end" fill="${dim}" font-size="9" font-family="monospace">${lbl}</text>`;}
+  });
+
+  // ── Saturation dome ──
+  const liqPts=SAT.map(r=>[toX(r.hf),toY(r.P)]);
+  const vapPts=[...SAT].reverse().map(r=>[toX(r.hg),toY(r.P)]);
+  const critPt=SAT[SAT.length-1];
+  s+=`<path d="${CR([...liqPts,...vapPts.slice(1)])} Z" fill="${acc}" fill-opacity="0.08" clip-path="${clip}"/>`;
+  s+=`<path d="${CR(liqPts)}" fill="none" stroke="${fg}" stroke-width="2.2" stroke-linecap="round" clip-path="${clip}"/>`;
+  s+=`<path d="${CR(vapPts)}" fill="none" stroke="${fg}" stroke-width="2.2" stroke-linecap="round" clip-path="${clip}"/>`;
+  s+=`<circle cx="${toX(critPt.hf).toFixed(1)}" cy="${toY(critPt.P).toFixed(1)}" r="3.5" fill="${fg}" opacity="0.7"/>`;
+
+  // Isotherm labels every 20°C on vapor side
+  SAT.forEach((r,i)=>{
+    if(i===SAT.length-1||r.T%20!==0)return;
+    const xg=toX(r.hg),yg=toY(r.P);
+    if(xg>L+5&&xg<W-R-5){
+      s+=`<line x1="${xg.toFixed(1)}" y1="${(yg-4).toFixed(1)}" x2="${xg.toFixed(1)}" y2="${(yg+4).toFixed(1)}" stroke="${dim}" stroke-width="1.2" opacity="0.5"/>`;
+      s+=`<text x="${(xg+4).toFixed(1)}" y="${(yg-4).toFixed(1)}" fill="${dim}" font-size="7.5" font-family="monospace" opacity="0.6">${r.T}°</text>`;
+    }
+  });
+
+  // Zone labels
+  {const mi=Math.floor(SAT.length*0.28),ms=SAT[mi];
+   const tx=(toX(ms.hf)+toX(ms.hg))/2,ty=toY(ms.P);
+   if(tx>L+20&&tx<W-R-20&&ty>TT+15&&ty<H-B-15)
+     s+=`<text x="${tx.toFixed(1)}" y="${ty.toFixed(1)}" text-anchor="middle" fill="${dim}" font-size="9.5" font-family="monospace" opacity="0.5" font-style="italic">two-phase</text>`;
+   const lx=L+22,ly=TT+CH*0.42;
+   s+=`<text x="${lx}" y="${ly}" text-anchor="middle" fill="${dim}" font-size="9" font-family="monospace" opacity="0.38" transform="rotate(-90,${lx},${ly})">liquid</text>`;}
+
+  // ── Refrigeration Cycle ──
+  if(phCycle.length===4){
+    const[c1,c2,c3,c4]=phCycle;
+    const p1={x:toX(c1.h),y:toY(c1.P)},p2={x:toX(c2.h),y:toY(c2.P)};
+    const p3={x:toX(c3.h),y:toY(c3.P)},p4={x:toX(c4.h),y:toY(c4.P)};
+    const yPL=toY(c1.P),yPH=toY(c2.P),sw=2.5;
+
+    // P reference lines (to expansion valve only)
+    s+=`<line x1="${L}" y1="${yPL.toFixed(1)}" x2="${p4.x.toFixed(1)}" y2="${yPL.toFixed(1)}" stroke="${C_EVAP}" stroke-width="0.8" stroke-dasharray="3,4" opacity="0.35"/>`;
+    s+=`<line x1="${L}" y1="${yPH.toFixed(1)}" x2="${p3.x.toFixed(1)}" y2="${yPH.toFixed(1)}" stroke="${C_COND}" stroke-width="0.8" stroke-dasharray="3,4" opacity="0.35"/>`;
+
+    // P value labels on axis
+    const fP=v=>punit==='MPa'?v.toFixed(v<1?3:2):v>=100?v.toFixed(0):v>=10?v.toFixed(1):v.toFixed(2);
+    s+=`<text x="${(L-5).toFixed(1)}" y="${(yPL+3).toFixed(1)}" text-anchor="end" fill="${C_EVAP}" font-size="8" font-family="monospace" font-weight="700">${fP(toDisp(c1.P))}</text>`;
+    s+=`<text x="${(L-5).toFixed(1)}" y="${(yPH+3).toFixed(1)}" text-anchor="end" fill="${C_COND}" font-size="8" font-family="monospace" font-weight="700">${fP(toDisp(c2.P))}</text>`;
+
+    const arw=(x1,y1,x2,y2,f,col)=>{
+      const ax=x1+f*(x2-x1),ay=y1+f*(y2-y1),ag=Math.atan2(y2-y1,x2-x1)*180/Math.PI;
+      return`<polygon points="-5,-3 5,0 -5,3" transform="translate(${ax.toFixed(1)},${ay.toFixed(1)}) rotate(${ag.toFixed(1)})" fill="${col}"/>`;
+    };
+
+    // 4→1 EVAPORATOR
+    s+=`<line x1="${p4.x.toFixed(1)}" y1="${yPL.toFixed(1)}" x2="${p1.x.toFixed(1)}" y2="${yPL.toFixed(1)}" stroke="${C_EVAP}" stroke-width="${sw}" stroke-linecap="round" clip-path="${clip}"/>`;
+    s+=arw(p4.x,yPL,p1.x,yPL,0.55,C_EVAP);
+    {const mx=(p4.x+p1.x)/2;
+     s+=`<text x="${mx.toFixed(1)}" y="${(yPL-9).toFixed(1)}" text-anchor="middle" fill="${C_EVAP}" font-size="8.5" font-family="monospace" font-weight="700">EVAPORATOR</text>`;
+     s+=`<text x="${mx.toFixed(1)}" y="${(yPL+15).toFixed(1)}" text-anchor="middle" fill="${C_EVAP}" font-size="7.5" font-family="monospace" opacity="0.9">qC=${(c1.h-c4.h).toFixed(1)} kJ/kg</text>`;
+     // T at sat liquid and sat vapor endpoints
+     // T labels: only if line is long enough, place above evap line to avoid h-tick overlap
+     if(Math.abs(p1.x-p4.x)>25){
+       s+=`<text x="${p4.x.toFixed(1)}" y="${(yPL-20).toFixed(1)}" text-anchor="middle" fill="${C_EVAP}" font-size="7.5" font-family="monospace" opacity="0.72">${c4.T.toFixed(0)}°C</text>`;
+       if(Math.abs(p1.x-p4.x)>40)s+=`<text x="${p1.x.toFixed(1)}" y="${(yPL-20).toFixed(1)}" text-anchor="middle" fill="${C_EVAP}" font-size="7.5" font-family="monospace" opacity="0.72">${c1.T.toFixed(0)}°C</text>`;
+     }
+    }
+
+    // 1→2 COMPRESSOR
+    s+=`<line x1="${p1.x.toFixed(1)}" y1="${p1.y.toFixed(1)}" x2="${p2.x.toFixed(1)}" y2="${p2.y.toFixed(1)}" stroke="${C_COMP}" stroke-width="${sw}" stroke-linecap="round" clip-path="${clip}"/>`;
+    s+=arw(p1.x,p1.y,p2.x,p2.y,0.52,C_COMP);
+    {const ag=Math.atan2(p2.y-p1.y,p2.x-p1.x);
+     const mx=p1.x+(p2.x-p1.x)*0.5,my=p1.y+(p2.y-p1.y)*0.5;
+     // offset perpendicular (right of direction of travel)
+     const ox=18*Math.sin(ag),oy=-18*Math.cos(ag);
+     const lx=(mx+ox).toFixed(1),ly=(my+oy).toFixed(1),deg=(ag*180/Math.PI).toFixed(1);
+     const lineLen=Math.hypot(p2.x-p1.x,p2.y-p1.y);
+     if(lineLen>40){
+       s+=`<text x="${lx}" y="${(parseFloat(ly)-6).toFixed(1)}" text-anchor="middle" fill="${C_COMP}" font-size="8" font-family="monospace" font-weight="700" transform="rotate(${deg},${lx},${(parseFloat(ly)-6).toFixed(1)})">COMPRESSOR</text>`;
+       s+=`<text x="${lx}" y="${(parseFloat(ly)+4).toFixed(1)}" text-anchor="middle" fill="${C_COMP}" font-size="7.5" font-family="monospace" opacity="0.85" transform="rotate(${deg},${lx},${(parseFloat(ly)+4).toFixed(1)})">Win=${(c2.h-c1.h).toFixed(1)} kJ/kg</text>`;
+     } else {
+       // short line: put label to the right
+       s+=`<text x="${(Math.max(p1.x,p2.x)+10).toFixed(1)}" y="${((p1.y+p2.y)/2).toFixed(1)}" fill="${C_COMP}" font-size="8" font-family="monospace" font-weight="700">COMP</text>`;
+     }
+     // T2 label — top-right of point 2, clear of circle
+     s+=`<text x="${(p2.x+12).toFixed(1)}" y="${(p2.y).toFixed(1)}" fill="${C_COMP}" font-size="7.5" font-family="monospace" opacity="0.85">${c2.T.toFixed(0)}°C</text>`;
+    }
+
+    // 2→3 CONDENSER
+    s+=`<line x1="${p2.x.toFixed(1)}" y1="${yPH.toFixed(1)}" x2="${p3.x.toFixed(1)}" y2="${yPH.toFixed(1)}" stroke="${C_COND}" stroke-width="${sw}" stroke-linecap="round" clip-path="${clip}"/>`;
+    s+=arw(p2.x,yPH,p3.x,yPH,0.5,C_COND);
+    {const mx=(p2.x+p3.x)/2;
+     s+=`<text x="${mx.toFixed(1)}" y="${(yPH-9).toFixed(1)}" text-anchor="middle" fill="${C_COND}" font-size="8.5" font-family="monospace" font-weight="700">CONDENSER</text>`;
+     s+=`<text x="${mx.toFixed(1)}" y="${(yPH-2).toFixed(1)}" text-anchor="middle" fill="${C_COND}" font-size="7.5" font-family="monospace" opacity="0.9">qH=${(c2.h-c3.h).toFixed(1)} kJ/kg</text>`;
+     if(Math.abs(p2.x-p3.x)>32){
+       s+=`<text x="${(p3.x-1).toFixed(1)}" y="${(yPH-21).toFixed(1)}" text-anchor="middle" fill="${C_COND}" font-size="7.5" font-family="monospace" opacity="0.72">${c3.T.toFixed(0)}°C</text>`;
+     }
+    }
+
+    // 3→4 EXPANSION
+    s+=`<line x1="${p3.x.toFixed(1)}" y1="${yPH.toFixed(1)}" x2="${p4.x.toFixed(1)}" y2="${yPL.toFixed(1)}" stroke="${C_EXP}" stroke-width="${sw}" stroke-linecap="round" clip-path="${clip}"/>`;
+    s+=arw(p3.x,yPH,p4.x,yPL,0.52,C_EXP);
+    {const mx=(p3.x+p4.x)/2,my=(yPH+yPL)/2;
+     s+=`<text x="${(mx-7).toFixed(1)}" y="${my.toFixed(1)}" text-anchor="end" fill="${C_EXP}" font-size="8" font-family="monospace" font-weight="700">EXP</text>`;}
+
+    // 2' intersection
+    let p2p=null;
+    for(let i=0;i<SAT.length-1;i++){
+      const sL=SAT[i],sH=SAT[i+1];
+      if(sL.P<c1.P||sH.P>c2.P)continue;
+      const lpl=Math.log(c1.P),lph=Math.log(c2.P);
+      const fl=(Math.log(sL.P)-lpl)/(lph-lpl),fh=(Math.log(sH.P)-lpl)/(lph-lpl);
+      const hL=c1.h+fl*(c2.h-c1.h),hH=c1.h+fh*(c2.h-c1.h);
+      const dL=hL-sL.hg,dH=hH-sH.hg;
+      if(dL*dH<=0){const fc=dL/(dL-dH);p2p={x:toX(hL+fc*(hH-hL)),y:toY(sL.P+fc*(sH.P-sL.P))};break;}
+    }
+
+    // Vertical dashed drops (colored, subtle)
+    [[p1,C_EVAP],[p2,C_COMP],[p3,C_COND],[p4,C_EXP]].forEach(([p,col])=>{
+      s+=`<line x1="${p.x.toFixed(1)}" y1="${p.y.toFixed(1)}" x2="${p.x.toFixed(1)}" y2="${(H-B).toFixed(1)}" stroke="${col}" stroke-width="0.6" stroke-dasharray="3,4" opacity="0.3" clip-path="${clip}"/>`;
+    });
+
+    // h-value ticks on x-axis
+    [[p1,c1.h,C_EVAP],[p2,c2.h,C_COMP],[p3,c3.h,C_COND],[p4,c4.h,C_EXP]].forEach(([p,h,col])=>{
+      s+=`<line x1="${p.x.toFixed(1)}" y1="${(H-B).toFixed(1)}" x2="${p.x.toFixed(1)}" y2="${(H-B+4).toFixed(1)}" stroke="${col}" stroke-width="1.5"/>`;
+      s+=`<text x="${p.x.toFixed(1)}" y="${(H-B+25).toFixed(1)}" text-anchor="middle" fill="${col}" font-size="7.5" font-family="monospace">${h.toFixed(0)}</text>`;
+    });
+
+    // Point 2'
+    if(p2p){
+      s+=`<circle cx="${p2p.x.toFixed(1)}" cy="${p2p.y.toFixed(1)}" r="4.5" fill="${C_COMP}" stroke="${fg}" stroke-width="1"/>`;
+      s+=`<text x="${(p2p.x+7).toFixed(1)}" y="${(p2p.y-6).toFixed(1)}" fill="${C_COMP}" font-size="8.5" font-family="monospace" font-weight="bold">2'</text>`;
+    }
+
+    // Point circles
+    [[p1,'1',C_EVAP],[p2,'2',C_COMP],[p3,'3',C_COND],[p4,'4',C_EXP]].forEach(([p,lbl,col])=>{
+      s+=`<circle cx="${p.x.toFixed(1)}" cy="${p.y.toFixed(1)}" r="9" fill="${col}" stroke="${fg}" stroke-width="1.2"/>`;
+      s+=`<text x="${p.x.toFixed(1)}" y="${(p.y+3.5).toFixed(1)}" text-anchor="middle" fill="white" font-size="10.5" font-family="monospace" font-weight="bold">${lbl}</text>`;
+    });
+
+    // Superheated label
+    {const gx=Math.min(toX(SAT[SAT.length-2].hg)+28,W-R-28),gy=(yPL+yPH)/2;
+     if(gx>L&&gx<W-R&&gy>TT&&gy<H-B)s+=`<text x="${gx.toFixed(1)}" y="${gy.toFixed(1)}" fill="${dim}" font-size="9" font-family="monospace" opacity="0.45" font-style="italic">superheated</text>`;}
+
+    // Legend
+    // Legend — placed just below the plot area border, above h-axis text
+    const leg=[[C_EVAP,'Evap 4→1'],[C_COMP,'Comp 1→2'],[C_COND,'Cond 2→3'],[C_EXP,'Exp 3→4']];
+    const lly=H-B+38; let lx=L+4;
+    leg.forEach(([col,name])=>{
+      s+=`<rect x="${lx}" y="${lly-5}" width="12" height="4" rx="1.5" fill="${col}" opacity="0.9"/>`;
+      s+=`<text x="${lx+15}" y="${lly}" fill="${col}" font-size="8" font-family="monospace" font-weight="600">${name}</text>`;
+      lx+=148;
+    });
+  }
+
+  // Info box top-left
+  if(phCycle.length===4){
+    const[ci1,ci2,ci3,ci4]=phCycle;
+    const qCi=ci1.h-ci4.h,Wi=ci2.h-ci1.h,qHi=ci2.h-ci3.h;
+    const COPi=(Wi>0)?qCi/Wi:0;
+    const PRi=ci2.P/ci1.P;
+    const TLK=ci4.T+273.15,THK=ci3.T+273.15;
+    const COPcarn=(THK>TLK)?TLK/(THK-TLK):0;
+    const eta=(COPcarn>0)?Math.min(100,COPi/COPcarn*100):0;
+    const bx=L+6,by=TT+6;
+    const blines=[`COP = ${COPi.toFixed(3)}`,`COPcarnot = ${COPcarn.toFixed(2)}`,`η₂ = ${eta.toFixed(0)}%`,`PR = ${PRi.toFixed(2)}`,`qC=${qCi.toFixed(1)} W=${Wi.toFixed(1)} qH=${qHi.toFixed(1)} kJ/kg`];
+    s+=`<rect x="${bx}" y="${by}" width="174" height="${blines.length*13+6}" rx="4" fill="${fg}" fill-opacity="0.07" stroke="${dim}" stroke-width="0.5" stroke-opacity="0.3"/>`;
+    blines.forEach((ln,i)=>{
+      s+=`<text x="${bx+6}" y="${by+12+i*13}" fill="${i===0?'#3aB87e':dim}" font-size="8.5" font-family="monospace" font-weight="${i===0?700:400}" opacity="${i===0?1:0.75}">${ln}</text>`;
+    });
+  }
+
+  // Axis labels
+  s+=`<text x="${(L+CW/2).toFixed(1)}" y="${H-B+50}" text-anchor="middle" fill="${dim}" font-size="10" font-family="monospace">h (kJ/kg)</text>`;
+  s+=`<text x="11" y="${(TT+CH/2).toFixed(1)}" text-anchor="middle" fill="${dim}" font-size="10" font-family="monospace" transform="rotate(-90,11,${TT+CH/2})">P (${punit})</text>`;
+  s+=`<text x="${(L+CW/2).toFixed(1)}" y="${TT-12}" text-anchor="middle" fill="${fg}" font-size="12.5" font-family="monospace" font-weight="bold">P-h Diagram · ${ref}</text>`;
+
+  // Zoom buttons (top-right)
+  {const zx=W-R-4,zy=TT+4;
+   s+=`<g style="cursor:pointer" onclick="phZoom(0.72)"><rect x="${zx-22}" y="${zy}" width="22" height="20" rx="4" fill="${dim}" fill-opacity="0.18"/><text x="${zx-11}" y="${zy+14}" text-anchor="middle" fill="${fg}" font-size="15" font-family="monospace">+</text></g>`;
+   s+=`<g style="cursor:pointer" onclick="phZoom(1.39)"><rect x="${zx-22}" y="${zy+23}" width="22" height="20" rx="4" fill="${dim}" fill-opacity="0.18"/><text x="${zx-11}" y="${zy+37}" text-anchor="middle" fill="${fg}" font-size="15" font-family="monospace">−</text></g>`;
+   s+=`<g style="cursor:pointer" onclick="phResetView()"><rect x="${zx-22}" y="${zy+47}" width="22" height="18" rx="4" fill="${dim}" fill-opacity="0.18"/><text x="${zx-11}" y="${zy+59}" text-anchor="middle" fill="${dim}" font-size="9" font-family="monospace">FIT</text></g>`;}
+
+  svg.innerHTML=s;
+
+  // Pan & wheel zoom
+  svg.style.cursor='grab';
+  svg.onwheel=e=>{
+    e.preventDefault();
+    const rect=svg.getBoundingClientRect();
+    const mx=((e.clientX-rect.left)/rect.width)*W;
+    const my=((e.clientY-rect.top)/rect.height)*H;
+    const fac=e.deltaY>0?1.12:0.89;
+    const{hMin:hMn,hMax:hMx,PMin_bar:pmn,PMax_bar:pmx}=phView;
+    if(mx>=L&&mx<=W-R&&my>=TT&&my<=H-B){
+      const hAt=hMn+(mx-L)*(hMx-hMn)/CW;
+      const lAt=Math.log(pmn)+(H-B-my)/CH*Math.log(pmx/pmn);
+      const nhMin=hAt-(hAt-hMn)*fac,nhMax=hAt+(hMx-hAt)*fac;
+      const nlMin=lAt-(lAt-Math.log(pmn))*fac,nlMax=lAt+(Math.log(pmx)-lAt)*fac;
+      phView={...phView,hMin:nhMin,hMax:nhMax,PMin_bar:Math.exp(nlMin),PMax_bar:Math.exp(nlMax)};
+    } else {phZoom(fac);}
+    drawPhDiagram();
+  };
+  let _ds=null,_dv=null;
+  svg.onmousedown=e=>{phDragging=true;_ds={x:e.clientX,y:e.clientY};_dv={...phView};svg.style.cursor='grabbing';};
+  svg.onmousemove=e=>{
+    if(!phDragging||!_ds)return;
+    const rect=svg.getBoundingClientRect();
+    const scX=(phView.hMax-phView.hMin)/CW*(W/rect.width);
+    const dh=-( e.clientX-_ds.x)*scX;
+    const lSpan=Math.log(_dv.PMax_bar/_dv.PMin_bar);
+    const dlP=(e.clientY-_ds.y)*(lSpan/CH)*(H/rect.height);
+    phView={...phView,hMin:_dv.hMin+dh,hMax:_dv.hMax+dh,PMin_bar:_dv.PMin_bar*Math.exp(dlP),PMax_bar:_dv.PMax_bar*Math.exp(dlP)};
+    drawPhDiagram();
+  };
+  svg.onmouseup=svg.onmouseleave=()=>{phDragging=false;svg.style.cursor='grab';};
+  let _td=null,_tv=null;
+  svg.ontouchstart=e=>{
+    e.preventDefault();
+    if(e.touches.length===1){phDragging=true;_ds={x:e.touches[0].clientX,y:e.touches[0].clientY};_dv={...phView};}
+    else if(e.touches.length===2){_td=Math.hypot(e.touches[0].clientX-e.touches[1].clientX,e.touches[0].clientY-e.touches[1].clientY);_tv={...phView};}
+  };
+  svg.ontouchmove=e=>{
+    e.preventDefault();
+    if(e.touches.length===1&&phDragging&&_ds){
+      const rect=svg.getBoundingClientRect();
+      const scX=(_dv.hMax-_dv.hMin)/CW*(W/rect.width);
+      const dh=-(e.touches[0].clientX-_ds.x)*scX;
+      const lSpan=Math.log(_dv.PMax_bar/_dv.PMin_bar);
+      const dlP=(e.touches[0].clientY-_ds.y)*(lSpan/CH)*(H/rect.height);
+      phView={...phView,hMin:_dv.hMin+dh,hMax:_dv.hMax+dh,PMin_bar:_dv.PMin_bar*Math.exp(dlP),PMax_bar:_dv.PMax_bar*Math.exp(dlP)};
+      drawPhDiagram();
+    } else if(e.touches.length===2&&_td&&_tv){
+      const nd=Math.hypot(e.touches[0].clientX-e.touches[1].clientX,e.touches[0].clientY-e.touches[1].clientY);
+      const fac=_td/nd;
+      const hM=(_tv.hMin+_tv.hMax)/2,hH=(_tv.hMax-_tv.hMin)/2*fac;
+      const lM=(Math.log(_tv.PMin_bar)+Math.log(_tv.PMax_bar))/2,lH=Math.log(_tv.PMax_bar/_tv.PMin_bar)/2*fac;
+      phView={...phView,hMin:hM-hH,hMax:hM+hH,PMin_bar:Math.exp(lM-lH),PMax_bar:Math.exp(lM+lH)};
+      drawPhDiagram();
+    }
+  };
+  svg.ontouchend=()=>{phDragging=false;_td=null;};
+}
+
+
 function switchCalcCat(id){currentCalcCat=id;buildCalcTabs();}
 function buildCalcBody(){
   const body=document.getElementById('calc-body');if(!body)return;
   body.style.padding='';body.style.overflow='';body.style.display='';body.style.flexDirection='';
   if(currentCalcCat==='tables'){buildTableBody();return;}
   if(currentCalcCat==='sci'){buildSciCalcInPage();return;}
+  if(currentCalcCat==='state'){buildStateLookup();return;}
+  if(currentCalcCat==='ph'){buildPhDiagram();return;}
   const calcs=CALCS[currentCalcCat]||[];
   body.innerHTML=calcs.map(c=>{
     if(c.customRender && c.id==='unit_convert') return renderUnitConverter(c);
