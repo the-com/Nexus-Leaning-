@@ -2342,22 +2342,47 @@ function removeTyping(id){document.getElementById(id)?.remove();}
 function scrollMsgs(){requestAnimationFrame(()=>{msgsEl.scrollTop=msgsEl.scrollHeight;});}
 function tryBuildDiagram(raw){
   let j=raw.trim();
-  // Repair common AI JSON mistakes
-  j=j.replace(/,\s*([}\]])/g,'$1');     // trailing commas
-  j=j.replace(/:\s*True\b/g,':true');   // Python booleans
+
+  // ── Step 1: Extract JSON object boundaries ──
+  const si=j.indexOf('{'); const ei=j.lastIndexOf('}');
+  if(si<0||ei<0)return`<div style="color:var(--red);font-size:10px;font-family:'DM Mono',monospace;padding:6px;border:1px solid var(--red);border-radius:6px;">⚠ diagram: ไม่พบ JSON</div>`;
+  j=j.substring(si,ei+1);
+
+  // ── Step 2: Repair common AI JSON mistakes ──
+  j=j.replace(/,\s*([}\]])/g,'$1');      // trailing commas
+  j=j.replace(/:\s*True\b/g,':true');    // Python booleans
   j=j.replace(/:\s*False\b/g,':false');
   j=j.replace(/:\s*None\b/g,':null');
-  j=j.replace(/\/\/[^\n]*/g,'');        // strip JS comments
-  // Keep only up to last }
-  const ei=j.lastIndexOf('}');if(ei>0)j=j.substring(0,ei+1);
-  // Find first {
-  const si=j.indexOf('{');if(si>0)j=j.substring(si);
+  j=j.replace(/\/\/[^\n]*/g,'');         // JS comments
+  j=j.replace(/\/\*[\s\S]*?\*\//g,'');   // block comments
+
+  // ── Step 3: Fix bad escape sequences inside strings ──
+  // Replace bad \x, \u without 4 hex digits, lone backslashes, etc.
+  j=j.replace(/"((?:[^"\\]|\\[\s\S])*?)"/g,(match,inner)=>{
+    // Fix invalid escape sequences: \_ \- \/ \' etc that are not valid JSON escapes
+    const fixed=inner
+      .replace(/\\([^"\\/bfnrtu])/g,'$1')        // remove bad escape, keep char
+      .replace(/\\u(?![0-9a-fA-F]{4})/g,'u');    // broken \uXXX without 4 hex
+    return `"${fixed}"`;
+  });
+
+  // ── Step 4: Try parse, if still fails → aggressive clean ──
   try{
     const data=JSON.parse(j);
-    if(!data.elements)throw new Error('no elements');
+    if(!data.elements||!Array.isArray(data.elements))throw new Error('ไม่มี elements array');
     return buildDiagramSVG(data);
-  }catch(e){
-    return`<div style="color:var(--red);font-size:10px;font-family:'DM Mono',monospace;padding:6px;border:1px solid var(--red);border-radius:6px;">⚠ diagram error: ${escH(e.message)}</div>`;
+  }catch(e1){
+    // Aggressive fallback: remove all control chars, re-try
+    try{
+      const clean=j
+        .replace(/[\x00-\x08\x0b\x0c\x0e-\x1f]/g,'') // bad control chars
+        .replace(/\\(?!["\\/bfnrtu])/g,'');            // any remaining bad escapes
+      const data=JSON.parse(clean);
+      if(!data.elements||!Array.isArray(data.elements))throw new Error('ไม่มี elements');
+      return buildDiagramSVG(data);
+    }catch(e2){
+      return`<div style="color:var(--red);font-size:10px;font-family:'DM Mono',monospace;padding:6px 8px;border:1px solid rgba(200,85,85,.3);border-radius:6px;">⚠ diagram error: ${escH(e2.message)}</div>`;
+    }
   }
 }
 
